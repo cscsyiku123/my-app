@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 function TagCategory({tagName}: { tagName?: string }) {
     return <div
-        className=" flex items-center justify-center bg-gray-100 text-gray-700 px-7 max-w-[150px] h-[35px] text-[12px] font-medium flex-wrap m-[2px] rounded-[8px]">{tagName}</div>;
+        className=" flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 min-w-[75px] max-w-[150px] h-[35px] text-[12px] font-medium flex-wrap m-[2px] rounded-[8px]">{tagName}</div>;
 }
 function VideoTag() {
     return <div className="videoTag flex flex-col min-w-[250px] max-w-[400px] h-[300px] rounded-[8px]  justify-between pb-1 font-medium">
@@ -103,7 +103,7 @@ export default function () {
                         <div>热门</div>
                     </div>
                     <div
-                        className="centerCategory flex items-center justify-around w-[950px] border-x border-x-gray-300 h-[100px] flex-wrap py-5">
+                        className="centerCategory flex items-center justify-around w-[950px] border-x border-x-gray-300 h-[100px] flex-wrap px-5">
                         {
                             ["番剧", "电影", "国创", "电视剧", "综艺", "纪录片", "动画", "游戏", "鬼畜", "音乐", "舞蹈", "影视", "娱乐", "知识", "科技", "资讯", "美食", "生活", "汽车", "时尚", "运动", "更多"].map((item, index) => {
                                 return <TagCategory tagName={item} key={index}/>

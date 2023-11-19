@@ -5,13 +5,13 @@ import {useRouter} from "next/router";
 export default function Layout({children}: { children: ReactElement }) {
     const router = useRouter()
     return (
-        <>
+        <div className="flex flex-col items-center ">
             <Navigate></Navigate>
-            <div className="mx-20 w-[1920px]">
+            <div className="w-[1920px] mt-2 ">
                 {children}
             </div>
             <div className="footer">
             </div>
-        </>
+        </div>
     )
 }

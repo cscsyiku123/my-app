@@ -4,62 +4,12 @@ import {SwiperData} from "@/lib/entitiy/SwiperData";
 import Link from "next/link";
 import Layout from "@/pages/layout";
 import {NextPageWithLayout} from "@/pages/_app";
+import {CategoryTag} from "@/components/categoryTag";
+import {VideoTag} from "@/components/videoTag";
+import {Swiper} from "@/components/swiper";
 
-function TagCategory(props: { tagName: string }) {
-    return <div
-        className="tracking-widest flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-500 w-[120px] h-[35px] text-[14px] font-medium flex-wrap m-[2px] rounded-[8px]">{props.tagName}</div>;
-}
-function VideoTag() {
-    return <div className="videoTag flex flex-col min-w-[250px] max-w-[350px] h-[300px] rounded-[8px]  justify-between pb-1 font-medium">
-        <img src="example.png" className="object-cover rounded-[8px]"/>
-        <div className=" ">9.0分超越《无证之罪》，国产悬疑扛鼎之作？全集解说《沉默的真相》</div>
-        <div className=" text-gray-300 text-[12px] pl-2">
-            <div className="text-orange-500 bg-orange-200 inline">1万点赞</div>
-            <div className=" inline-block ml-1">若雨随影· 10-12</div>
-        </div>
-    </div>;
-}
 
-function Swiper(props: { swiperDataList: Array<SwiperData>, }) {
-    const [swiperCheckoutIndex, setSwiperCheckoutIndex] = useState(0)
-    useEffect(() => {
-        const swiperInterval = setInterval(() => {
-            setSwiperCheckoutIndex((old) =>{
-                console.log(old)
-                return (old + 1) % props.swiperDataList.length;
-            })
-        }, 3000)
-        return () => {
-            clearInterval(swiperInterval)
-        }
-    }, [])
-    return <div className="homeSwiper w-[850px] h-[550px]  relative flex items-center justify-center ">
-        <div className="w-full h-full overflow-hidden rounded-[8px]">
-            <div className="w-[calc(100%*3)] h-full border-solid transition-all duration-500"
-                 style={{marginLeft: `calc(-100%*${swiperCheckoutIndex})`}}>
-                {
-                    props.swiperDataList.map((item, index) => {
-                        return (
-                            <Link href={item.link}>
-                                <div key={item.id} className={`w-[calc(100%/${props.swiperDataList.length})] h-full float-left bg-blue-200 float-left`}>
-                                    <img src={item.image}/>
-                                    <p>{item.description}</p>
-                                </div>
-                            </Link>
-                        )
-                    })
-                }
-            </div>
-        </div>
-        <div className="flex items-center justify-center absolute bottom-5">
-            {
-                props.swiperDataList.map((item, index) => {
-                    return (<label key={index} className="bg-white w-[20px] h-[20px] rounded-full cursor-pointer m-2 hover:scale-125 "></label>)
-                })
-            }
-        </div>
-    </div>;
-}
+
 
 const Page: NextPageWithLayout = () => {
     return (
@@ -67,11 +17,11 @@ const Page: NextPageWithLayout = () => {
             <div className="homeCategory flex items-center justify-between text-gray-700 max-w-[1920px] py-5 h-[145px]">
                 <div className="leftCategory flex items-center justify-between w-[200px] border-gray-200 mx-10">
                     <div className="flex flex-col items-center justify-between h-full">
-                        <img src="544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="w-[75px] h-[75px] rounded-full"/>
+                        <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="w-[75px] h-[75px] rounded-full"/>
                         <p>动态</p>
                     </div>
                     <div className="flex flex-col items-center justify-between">
-                        <img src="544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="w-[75px] h-[75px] rounded-full"/>
+                        <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="w-[75px] h-[75px] rounded-full"/>
                         <p>热门</p>
                     </div>
                 </div>
@@ -79,7 +29,7 @@ const Page: NextPageWithLayout = () => {
                     className="centerCategory flex items-center justify-around w-[1500px] border-x border-x-gray-300 h-[100px] flex-wrap px-5">
                     {
                         ["番剧", "电影", "国创", "电视剧", "综艺", "纪录片", "动画", "游戏", "鬼畜", "音乐", "舞蹈", "影视", "娱乐", "知识", "科技", "资讯", "美食", "生活", "汽车", "时尚", "运动", "更多"].map((item, index) => {
-                            return <TagCategory tagName={item} key={index}/>
+                            return <CategoryTag tagName={item} key={index}/>
                         })
                     }
                 </div>

@@ -4,7 +4,7 @@ export default function () {
     const [searchDetailShow, setSearchDetailShow] = useState(true)
 
     return (
-        <div className="navigate w-full h-[75px] bg-amber-200 flex items-center justify-between font-medium text-white">
+        <div className="navigate w-full h-[75px] bg-white shadow-md flex  items-center justify-between font-medium text-gray-700">
             <div className="leftNavigate flex items-center justify-between">
                 <div className="font-medium">首页</div>
                 <div>番剧</div>
@@ -64,21 +64,21 @@ export default function () {
                 }
             </div>
             <div className="rightNavigate flex items-center justify-between">
-                <img src="544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="avator w-[50px] h-[50px] rounded-full"/>
+                <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="avator w-[50px] h-[50px] rounded-full"/>
                 <div className="flex flex-col items-center justify-between h-full">
-                    <img src="544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="w-[50px] h-[50px] rounded-full"/>
+                    <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="w-[50px] h-[50px] rounded-full"/>
                     <p>大会员</p>
                 </div>
                 <div className="flex flex-col items-center justify-between h-full">
-                    <img src="544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="w-[50px] h-[50px] rounded-full"/>
+                    <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="w-[50px] h-[50px] rounded-full"/>
                     <p>消息</p>
                 </div>
                 <div className="flex flex-col items-center justify-between h-full">
-                    <img src="544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="w-[50px] h-[50px] rounded-full"/>
+                    <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="w-[50px] h-[50px] rounded-full"/>
                     <p>动态</p>
                 </div>
                 <div className="flex flex-col items-center justify-between h-full">
-                    <img src="544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="w-[50px] h-[50px] rounded-full"/>
+                    <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="w-[50px] h-[50px] rounded-full"/>
                     <p>收藏</p>
                 </div>
             </div>

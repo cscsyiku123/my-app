@@ -1,5 +1,12 @@
 import React, {useState} from "react";
 
+function SearchHistoryTag(props:{name:string}) {
+    return (
+        <div
+            className="flex items-center justify-center bg-gray-100 rounded-lg hover:text-blue-300  px-2 text-[14px] h-[25px] ">{props.name}</div>
+    )
+}
+
 export default function () {
     const [searchDetailShow, setSearchDetailShow] = useState(true)
 
@@ -12,9 +19,9 @@ export default function () {
                 <div>游戏中心</div>
                 <div>会员购</div>
             </div>
-            <div className="searchTopBar h-[40px] w-[300px] bg-gray-100 rounded-2xl flex items-center justify-around relative">
+            <div className="searchTopBar h-[40px] w-[300px] bg-gray-100 rounded-lg flex items-center justify-around hover:bg-white relative border-2 border-solid p-1 transition-colors duration-700">
                 <input
-                    className=" bg-transparent hover:bg-white focus:outline-none placeholder:font-medium placeholder-gray-300 text-gray-500  w-[250px] font-light"
+                    className="focus:bg-gray-300 rounded-[5px] w-full h-full bg-transparent  focus:outline-none placeholder:font-medium placeholder-gray-300 text-gray-500  w-[250px] font-light"
                     type="text" placeholder="T1训练营" onBlur={() => setSearchDetailShow(false)}
                     onFocus={() => setSearchDetailShow(true)}/>
                 <div className="searchIcon"></div>
@@ -23,27 +30,20 @@ export default function () {
                         <div>
                             <div className="flex items-center justify-between">
                                 <div className="font-medium">搜索历史</div>
-                                <div className=" text-gray-200 border-l border-l-gray-200 text-[12px] hover:text-blue-300 pl-2">清空
+                                <div
+                                    className=" text-gray-200 border-l border-l-gray-200 text-[12px] hover:text-blue-300 pl-2">清空
                                 </div>
                             </div>
                             <div
-                                className=" mt-3 font-light text-[12px] flex items-center justify-between content-between flex-wrap">
-                                <div className="bg-gray-300 p-0.5 rounded-lg hover:bg-gray-400 relative">123
-                                    <div className="absolute rounded-full "></div>
-                                </div>
-                                <div>123</div>
-                                <div>123</div>
-                                <div>123</div>
-                                <div>123</div>
-                                <div>123</div>
-                                <div>123</div>
-                                <div>123</div>
-                                <div>123</div>
-                                <div>123</div>
-                                <div>123</div>
-                                <div>123</div>
-                                <div>123</div>
-                                <div>123</div>
+                                className=" mt-3 font-light flex items-center justify-between content-between flex-wrap">
+                                <SearchHistoryTag name="123"/>
+                                <SearchHistoryTag name="123"/>
+                                <SearchHistoryTag name="123"/>
+                                <SearchHistoryTag name="123"/>
+                                <SearchHistoryTag name="123"/>
+                                <SearchHistoryTag name="123"/>
+                                <SearchHistoryTag name="123"/>
+
                             </div>
 
                             <div className="flex items-center justify-between">
@@ -51,7 +51,7 @@ export default function () {
                             </div>
                             <div className="flex items-center justify-between">
                                 {
-                                    ["1 1231","2 1231231"].map((item, index) => {
+                                    ["1 1231", "2 1231231"].map((item, index) => {
                                         return <div className=" p-0.5 rounded-lg hover:bg-gray-200  "
                                                     key={index}>
                                             {item}

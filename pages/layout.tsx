@@ -5,9 +5,9 @@ import {useRouter} from "next/router";
 export default function Layout({children}: { children: ReactElement }) {
     const router = useRouter()
     return (
-        <div className="flex flex-col items-center ">
+        <div className="flex flex-col items-center bg-gray-50 ">
             <Navigate></Navigate>
-            <div className="w-[1920px] mt-2 ">
+            <div className="w-[1920px] mt-2 bg-white">
                 {children}
             </div>
             <div className="footer">

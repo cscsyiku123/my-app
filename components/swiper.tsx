@@ -1,8 +1,9 @@
-import {SwiperData} from "@/lib/entitiy/SwiperData";
+import {SwiperData} from "@/lib/entitiy/swiperData";
 import React, {useEffect, useState} from "react";
 import Link from "next/link";
 
 export function Swiper(props: { swiperDataList: Array<SwiperData>, }) {
+
     const [swiperCheckoutIndex, setSwiperCheckoutIndex] = useState(0)
     useEffect(() => {
         const swiperInterval = setInterval(() => {

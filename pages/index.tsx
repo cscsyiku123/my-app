@@ -14,7 +14,7 @@ import {Swiper} from "@/components/swiper";
 const Page: NextPageWithLayout = () => {
     return (
         <>
-            <div className="homeCategory flex items-center justify-between text-gray-700 max-w-[1920px] py-5 h-[145px]">
+            <div className="homeCategory flex items-center justify-between text-gray-700 max-w-[1920px] py-5">
                 <div className="leftCategory flex items-center justify-between w-[200px] border-gray-200 mx-10">
                     <div className="flex flex-col items-center justify-between h-full">
                         <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="w-[75px] h-[75px] rounded-full"/>
@@ -61,7 +61,7 @@ const Page: NextPageWithLayout = () => {
 
                 </div>
             </div>
-            <div className="homeRecommand flex h-[650px]">
+            <div className="homeRecommand flex">
                 <Swiper swiperDataList={Array()}/>
                 <div className="flex justify-between flex-wrap ml-8 w-[1100px]">
                     <VideoTag/>
@@ -75,6 +75,19 @@ const Page: NextPageWithLayout = () => {
 
             </div>
             <div className="mainPost max-w-[1920px] flex items-center justify-between flex-wrap">
+                    <VideoTag/>
+                    <VideoTag/>
+                    <VideoTag/>
+                    <VideoTag/>
+                    <VideoTag/>
+                    <VideoTag/>
+                    <VideoTag/>
+                    <VideoTag/>
+                    <VideoTag/>
+                    <VideoTag/>
+                    <VideoTag/>
+                    <VideoTag/>
+                    <VideoTag/>
                     <VideoTag/>
                     <VideoTag/>
                     <VideoTag/>

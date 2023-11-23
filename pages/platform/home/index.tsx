@@ -24,7 +24,7 @@ const Page: NextPageWithLayout = () => {
                                     {item.children.length > 0 && <MdOutlineKeyboardArrowDown
                                         className={`transition-all w-[22px] h-[22px] text-gray-400 duration-500 ${!showChildren && "rotate-180"}`}/>}
                                 </div>
-                                {item.children.length > 0 && <div
+                                {item.children.length > 0 &&                                          <div
                                     className={` pl-[25px] flex flex-col items-end justify-start  transition-all duration-500 max-h-0 overflow-hidden ease-out ${showChildren && "max-h-[300px]"}`}>
                                     {
                                         item.children.map((item, index) => {

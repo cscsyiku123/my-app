@@ -26,7 +26,35 @@ const Page: NextPageWithLayout = () => {
 
     const [videoTagData, setVideoTagData] = useState(Array(26).fill(1));
     const [videoTagPlaceHoderData, setVideoTagPlaceHoderData] = useState(Array(0));
-    
+    const [loading, setLoading] = useState(false);
+    const [load, setLoad] = useState(true);
+    useEffect(()=>{
+        window.addEventListener('scroll', ()=>{
+
+            const windowHeight =
+                'innerHeight' in window
+                    ? window.innerHeight
+                    : document.documentElement.offsetHeight;
+            const body = document.body;
+            const html = document.documentElement;
+            const documentHeight = Math.max(
+                body.scrollHeight,
+                body.offsetHeight,
+                html.clientHeight,
+                html.scrollHeight,
+                html.offsetHeight
+            );
+            const windowBottom = windowHeight + window.pageYOffset;
+            console.log(windowBottom)
+            console.log(documentHeight)
+            if (windowBottom >= documentHeight && !loading && load) {
+                setLoading(true)
+                loadMore(setVideoTagPlaceHoderData,setVideoTagData)
+                setLoading(false)
+            }
+        });
+
+    },[])
     return (
         <>
             <div className="homeCategory flex items-center justify-between text-gray-700 max-w-[1920px] py-5">
@@ -103,7 +131,7 @@ const Page: NextPageWithLayout = () => {
                         return <VideoTagPlaceHoder/>
                     })
                 }
-    <button onClick={()=>loadMore(setVideoTagPlaceHoderData,setVideoTagData)} className="w-[20px] h-[20px]">123</button>
+
             </div>
         </>
     )

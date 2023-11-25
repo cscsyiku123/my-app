@@ -5,7 +5,7 @@ export class SwiperData {
     image: string;
     link: string;
 
-    private constructor(id: number, title: string, description: string, image: string, link: string) {
+    public constructor(id: number, title: string, description: string, image: string, link: string) {
         this.id = id;
         this.title = title;
         this.description = description;

@@ -1,13 +1,12 @@
 import {SwiperData} from "@/lib/entitiy/swiperData";
 import React, {useEffect, useState} from "react";
-import Link from "next/link";
 
 export function Swiper(props: { swiperDataList: Array<SwiperData>, }) {
 
     const [swiperCheckoutIndex, setSwiperCheckoutIndex] = useState(0)
     useEffect(() => {
         const swiperInterval = setInterval(() => {
-            setSwiperCheckoutIndex((old) =>{
+            setSwiperCheckoutIndex((old) => {
                 console.log(old)
                 return (old + 1) % props.swiperDataList.length;
             })
@@ -16,28 +15,36 @@ export function Swiper(props: { swiperDataList: Array<SwiperData>, }) {
             clearInterval(swiperInterval)
         }
     }, [])
-    return <div className="homeSwiper w-[850px] h-[550px]  relative flex items-center justify-center ">
-        <div className="w-full h-full overflow-hidden rounded-[8px]">
-            <div className="w-[calc(100%*3)] h-full border-solid transition-all duration-500"
-                 style={{marginLeft: `calc(-100%*${swiperCheckoutIndex})`}}>
+    return <div
+        className="homeSwiper w-[716px] h-[550px]  relative flex items-center justify-center col-span-2 row-span-2 ">
+        <div className="w-full h-full overflow-hidden  rounded-[8px]">
+            <div className={` h-full border-solid transition-all duration-500`}
+                 style={{
+                     marginLeft: `calc(-100%*${swiperCheckoutIndex})`,
+                     width: `calc(100%*${props.swiperDataList.length})`
+                 }}>
                 {
                     props.swiperDataList.map((item, index) => {
                         return (
-                            <Link href={item.link}>
-                                <div key={item.id} className={`w-[calc(100%/${props.swiperDataList.length})] h-full float-left bg-blue-200 float-left`}>
-                                    <img src={item.image}/>
-                                    <p>{item.description}</p>
-                                </div>
-                            </Link>
+                            <div key={item.id}
+                                 className={` h-full bg-blue-200 float-left flex items-center justify-center relative`}
+                                 style={{
+                                     width: `calc(100%/${props.swiperDataList.length})`
+                                 }}
+                            >
+                                <img src={item.image}/>
+                                <div className="text-white font-medium absolute bottom-10">{item.description}</div>
+                            </div>
                         )
                     })
                 }
             </div>
         </div>
-        <div className="flex items-center justify-center absolute bottom-5">
+        <div className="flex items-center justify-center absolute bottom-1">
             {
                 props.swiperDataList.map((item, index) => {
-                    return (<label key={index} className="bg-white w-[20px] h-[20px] rounded-full cursor-pointer m-2 hover:scale-125 "></label>)
+                    return (<label key={index}
+                                   className="bg-white w-[20px] h-[20px] rounded-full cursor-pointer m-2 hover:scale-125 "></label>)
                 })
             }
         </div>

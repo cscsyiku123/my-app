@@ -3,19 +3,31 @@ import Layout from "@/pages/layout";
 import {NextPageWithLayout} from "@/pages/_app";
 import Head from "next/head";
 import {CategoryTag} from "@/components/categoryTag";
+import {useRouter} from "next/router";
+import {useParams, usePathname, useSearchParams} from "next/navigation";
 
 const Page: NextPageWithLayout = () => {
+    let router = useRouter();
+    let id = router.query.id;
+    console.log(router)
+    console.log(id)
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
+    console.log(pathname)
+    console.log(searchParams?.values())
+    let params = useParams();
+    console.log(params)
     return (
         <>
             <Head>
                 <title>video</title>
                 <meta name="description" content="这是一个video页面"/>
             </Head>
-            <div className="w-full h-full bg-amber-100 flex items-center justify-between">
+            <div className="w-full h-full flex items-center justify-between">
                 <div className="leftVideo w-[1200px]">
-                    <p className="videoTitle text-[50px] font-bold">财务自由的本质&普通人注定无法实现财务自由</p>
+                    <p className="videoTitle text-[30px] ">财务自由的本质&普通人注定无法实现财务自由</p>
                     <div
-                        className="videoDescription text-[12px]  text-gray-300 flex items-center justify-between w-[350px]">
+                        className="videoDescription text-[16px] mt-2  text-gray-500 flex items-center justify-between w-[450px]">
                         <div>6.1 万</div>
                         <div>6023</div>
                         <div>2023-11-11 10:25:59</div>
@@ -67,7 +79,8 @@ const Page: NextPageWithLayout = () => {
                         <div className="commentSection flex items-center justify-between w-full">
                             <div className="userComment flex items-center justify-between w-full">
                                 <div>头像</div>
-                                <div className="comment flex flex-col items-start justify-between bg-bottom border-solid">
+                                <div
+                                    className="comment flex flex-col items-start justify-between bg-bottom border-solid">
                                     <div className="">用户名</div>
                                     <div className="comment">
                                         置顶我们建了个群，重点讨论如何提升个人核心通用能力：思维力、学习力、人脉力。以及解决工作三年以上会碰到的实际问题，如缺乏深度思考、知识零散不成体系、晋升瓶颈、沟通表达不清等。如果你想要进群的话，可以加微信号youcore27，群是免费，但是谢绝广告和干扰
@@ -112,29 +125,34 @@ const Page: NextPageWithLayout = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="barrageList">
-                        <div className="bg-gray-300 rounded-lg">
-                            <p className=" font-bold">弹幕列表</p>
+                    <div className="barrageList  w-[600px]">
+                        <div className="bg-gray-200 rounded-lg text-[18px]  h-[50px] flex items-center pl-5">
+                            <p className="">弹幕列表</p>
                         </div>
-                        <table className="text-[10px]">
-                            <thead>
-                            <tr>
-                                <td>01:56</td>
-                                <td>12313</td>
-                                <td>11-12 02:34</td>
-                            </tr>
-                            </thead>
-                           <tbody>
-                           <tr>
-                               <td>01:56</td>
-                               <td>12313</td>
-                               <td>11-12 02:34</td>
-                           </tr>
-                           </tbody>
-                        </table>
-
-
-
+                        <div className="overflow-y-scroll h-[500px] pb-2 pl-2">
+                            <table className="text-[16px] text-gray-500 w-full table-fixed ">
+                                <thead>
+                                <tr>
+                                    <td className="w-[70px]">时间</td>
+                                    <td className="w-[350px]">弹幕内容</td>
+                                    <td className="w-[100px]">发送时间</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {
+                                    Array(60).fill(1).map((item, index) => {
+                                        return (
+                                            <tr>
+                                                <td>01:56</td>
+                                                <td className="text-gray-800 line-clamp-1	">12311313131313131313131312313131231321312321313313131331231313131313133</td>
+                                                <td>11-12 02:34</td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div className="recommand flex flex-col ">
                         <div className="font-bold flex items-center justify-between">

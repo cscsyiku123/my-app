@@ -1,15 +1,19 @@
 import {NextPageWithLayout} from "@/pages/_app";
-import React, {ReactElement, useState} from "react";
+import React, {ReactElement, useEffect, useState} from "react";
 import Layout from "@/pages/layout";
 import {CatalogData} from "@/lib/entitiy/catalogData";
 import {IoDocumentText} from "react-icons/io5";
 import {MdOutlineKeyboardArrowDown} from "react-icons/md";
 
 const Page: NextPageWithLayout = () => {
+    useEffect(() => {
+        console.log(123)
+    }, [])
     const [showChildren, setShowChildren] = useState(false);
     return (
         <div className="w-full h-full flex items-center justify-center">
-            <div className="leftSiderBar fixed left-0 top-[100px] flex flex-col items-center w-[150px] overflow-auto h-full bg-white">
+            <div
+                className="leftSiderBar fixed left-0 top-[100px] flex flex-col items-center w-[150px] overflow-auto h-full bg-white">
                 <div className=" w-[100px] h-[30px] bg-sky-400 ">投稿</div>
                 {
                     [new CatalogData(1, "首页", "", IoDocumentText, [new CatalogData(1, "首页", "", IoDocumentText, []), new CatalogData(1, "首页", "", IoDocumentText, []), new CatalogData(1, "首页", "", IoDocumentText, []), new CatalogData(1, "首页", "", IoDocumentText, [])]),
@@ -24,16 +28,17 @@ const Page: NextPageWithLayout = () => {
                                     {item.children.length > 0 && <MdOutlineKeyboardArrowDown
                                         className={`transition-all w-[22px] h-[22px] text-gray-400 duration-500 ${!showChildren && "rotate-180"}`}/>}
                                 </div>
-                                {item.children.length > 0 &&                                          <div
-                                    className={` pl-[25px] flex flex-col items-end justify-start  transition-all duration-500 max-h-0 overflow-hidden ease-out ${showChildren && "max-h-[300px]"}`}>
-                                    {
-                                        item.children.map((item, index) => {
-                                            return (
-                                                <p className="mt-3 text-gray-500 w-[75px]">{item.name}</p>
-                                            )
-                                        })
-                                    }
-                                </div>
+                                {item.children.length > 0 &&
+                                     <div
+                                        className={` pl-[25px] flex flex-col items-end justify-start  transition-all duration-500 max-h-0 overflow-hidden ease-out ${showChildren && "max-h-[300px]"}`}>
+                                        {
+                                            item.children.map((item, index) => {
+                                                return (
+                                                    <p className="mt-3 text-gray-500 w-[75px]">{item.name}</p>
+                                                )
+                                            })
+                                        }
+                                    </div>
                                 }
                             </div>
 

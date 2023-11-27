@@ -1,62 +1,79 @@
-import React, {ReactElement} from "react";
+import React, {ReactElement, useEffect, useState} from "react";
 import Layout from "@/pages/layout";
 import {NextPageWithLayout} from "@/pages/_app";
-import Head from "next/head";
 import {CategoryTag} from "@/components/categoryTag";
 import {useRouter} from "next/router";
-import {useParams, usePathname, useSearchParams} from "next/navigation";
+import {MdOutlineKeyboardArrowDown} from "react-icons/md";
+import {PiProhibitBold} from "react-icons/pi";
+import {CiPlay1} from "react-icons/ci";
+import {LiaCommentDotsSolid} from "react-icons/lia";
+import {RiFontColor, RiMore2Line} from "react-icons/ri";
+import {TiArrowForward} from "react-icons/ti";
+import {FaStar} from "react-icons/fa";
+import {HiMiniCurrencyYen} from "react-icons/hi2";
+import {BiSolidLike} from "react-icons/bi";
 
 const Page: NextPageWithLayout = () => {
     let router = useRouter();
-    let id = router.query.id;
-    console.log(router)
-    console.log(id)
-    const pathname = usePathname()
-    const searchParams = useSearchParams()
-    console.log(pathname)
-    console.log(searchParams?.values())
-    let params = useParams();
-    console.log(params)
+    useEffect(() => {
+        var {isReady, query: {videoId}} = router
+        if (isReady) {
+            console.log(videoId)
+        }
+    }, [router.query]);
+
+    const [showBarrageListDetail, setShowBarrageListDetail] = useState(false)
+
+
     return (
         <>
-            <Head>
-                <title>video</title>
-                <meta name="description" content="这是一个video页面"/>
-            </Head>
-            <div className="w-full h-full flex items-center justify-between">
+            <div className="w-full h-full flex items-start justify-between">
                 <div className="leftVideo w-[1200px]">
                     <p className="videoTitle text-[30px] ">财务自由的本质&普通人注定无法实现财务自由</p>
                     <div
-                        className="videoDescription text-[16px] mt-2  text-gray-500 flex items-center justify-between w-[450px]">
-                        <div>6.1 万</div>
+                        className="videoDescription text-[16px] mt-2  text-gray-500 flex items-center justify-between w-[550px]">
+                        <CiPlay1/>
+                        <div> 6.1 万</div>
+                        <LiaCommentDotsSolid/>
                         <div>6023</div>
                         <div>2023-11-11 10:25:59</div>
-                        <div>未经作者授权，禁止转载</div>
+                        <PiProhibitBold className="text-red-500"/>
+                        <div> 未经作者授权，禁止转载</div>
                     </div>
-                    <div className="videoMain shadow-md w-[1000px] ">
-                        <video></video>
-                        <div className="w-full h-[50px] flex items-center justify-between">
+                    <div className="videoMain  w-full ">
+                        <video className="w-full h-[500px]  "></video>
+                        <div className="w-full h-[55px] flex items-center justify-between shadow-lg p-5 text-[20px]">
                             <p>67 人正在看，已装填517条弹幕</p>
-                            <div className="barrang flex items-center justify-between w-[700px]">
-                                <div className="w-[600px]">
-                                    <p>A</p>
-                                    <input className="rounded-lg bg-gray-300  focus:outline-none bg-transparent "
-                                           placeholder="发个友善弹幕"/>
-                                    <a>{`弹幕礼仪>`}</a>
+                            <div
+                                className="barrang flex items-center justify-between w-[700px] h-[55px] rounded-2xl bg-gray-100 ">
+                                <div className="w-[600px] flex items-center justify-between h-full ">
+                                    <RiFontColor className="w-[25px] h-[25px] "/>
+                                    <input className="rounded-lg focus:outline-none bg-transparent w-[450px] h-full"
+                                           placeholder="发个友善弹幕见证下当下"/>
+                                    <div className="text-gray-400 hover:text-sky-400">{`弹幕礼仪>`}</div>
                                 </div>
-                                <input type="button" className="bg-blue-400" value="发送"/>
+                                <input type="button" className="bg-sky-400 h-full w-[80px] rounded-r-lg text-white"
+                                       value="发送"/>
                             </div>
                         </div>
-                        <div className="bg-bottom border-solid flex items-center justify-between w-[300px]">
+                        <div
+                            className="bg-bottom border-solid flex items-center justify-start gap-5   h-[50px] border-b-[3px]">
+                            <BiSolidLike/>
                             <div>2544</div>
+                            <HiMiniCurrencyYen/>
                             <div>2544</div>
+                            <FaStar/>
                             <div>2544</div>
+                            <TiArrowForward/>
                             <div>2544</div>
                         </div>
                         <div className="videoDescription">
                             主要包含三个部分的内容：财务自由的本质、财务自由者过多的危害，以及拿什么替代财务自由
                         </div>
-                        <div className="videoTag">q
+                        <div className="videoTag flex items-center flex-wrap gap-3">
+                            <CategoryTag tagName="开麦职场人"/>
+                            <CategoryTag tagName="开麦职场人"/>
+                            <CategoryTag tagName="开麦职场人"/>
                             <CategoryTag tagName="开麦职场人"/>
                         </div>
                     </div>
@@ -125,26 +142,38 @@ const Page: NextPageWithLayout = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="barrageList  w-[600px]">
-                        <div className="bg-gray-200 rounded-lg text-[18px]  h-[50px] flex items-center pl-5">
-                            <p className="">弹幕列表</p>
+                    <div className="barrageList  w-[700px]">
+                        <div
+                            className="bg-gray-200 rounded-lg text-[18px]  h-[50px] flex items-center px-5 justify-between"
+                            onClick={() => setShowBarrageListDetail((o) => !o)}>
+                            <div className="flex items-center">
+                                <p className="">弹幕列表</p>
+                                <RiMore2Line/>
+                            </div>
+
+
+                            <MdOutlineKeyboardArrowDown
+                                className={`transition-all w-[22px] h-[22px] text-gray-400 duration-500 ${!showBarrageListDetail && "rotate-180"}`}/>
                         </div>
-                        <div className="overflow-y-scroll h-[500px] pb-2 pl-2">
+                        <div
+                            className={` pl-2 transition-all duration-500 max-h-0 overflow-hidden ease-out ${showBarrageListDetail && `max-h-[500px] overflow-y-scroll"}`}`}
+
+                        >
                             <table className="text-[16px] text-gray-500 w-full table-fixed ">
                                 <thead>
                                 <tr>
-                                    <td className="w-[70px]">时间</td>
-                                    <td className="w-[350px]">弹幕内容</td>
-                                    <td className="w-[100px]">发送时间</td>
+                                    <th className="w-[70px]">时间</th>
+                                    <th className="w-[350px]">弹幕内容</th>
+                                    <th className="w-[100px]">发送时间</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {
                                     Array(60).fill(1).map((item, index) => {
                                         return (
-                                            <tr>
+                                            <tr key={index}>
                                                 <td>01:56</td>
-                                                <td className="text-gray-800 line-clamp-1	">12311313131313131313131312313131231321312321313313131331231313131313133</td>
+                                                <td className="text-gray-800 w-[350px] line-clamp-1	break-all">12311313131313131313131312313131231321312321313313131331231313131313133</td>
                                                 <td>11-12 02:34</td>
                                             </tr>
                                         )

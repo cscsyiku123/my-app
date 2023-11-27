@@ -7,7 +7,7 @@ export function Swiper(props: { swiperDataList: Array<SwiperData>, }) {
     useEffect(() => {
         const swiperInterval = setInterval(() => {
             setSwiperCheckoutIndex((old) => {
-                console.log(old)
+                // console.log(old)
                 return (old + 1) % props.swiperDataList.length;
             })
         }, 3000)

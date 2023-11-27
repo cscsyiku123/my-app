@@ -1,4 +1,4 @@
-import React, {ReactElement, useEffect, useState} from "react";
+import React, {ReactElement, useEffect, useRef, useState} from "react";
 import {IoDocumentText} from "react-icons/io5";
 import Layout from "@/pages/layout";
 import {NextPageWithLayout} from "@/pages/_app";
@@ -9,16 +9,18 @@ import {SwiperData} from "@/lib/entitiy/swiperData";
 import {VideoTagPlaceHoder} from "@/components/videoTagPlaceHoder";
 
 
-function loadMore(setVideoTagPlaceHoderData: (value: (((prevState: any[]) => any[]) | any[])) => void, setVideoTagData: (value: (((prevState: any[]) => any[]) | any[])) => void) {
+function loadMore(setVideoTagPlaceHoderData: (value: (((prevState: any[]) => any[]) | any[])) => void, setVideoTagData: (value: (((prevState: any[]) => any[]) | any[])) => void, loading: React.MutableRefObject<boolean>) {
+    console.log("loadMore")
     let number = 10;
     setVideoTagPlaceHoderData(Array(number).fill(1))
     setTimeout(() => {
         setVideoTagPlaceHoderData(Array(0))
         setVideoTagData((old) => {
             old.push(...Array(number))
+            console.log(`old:${old.length}`)
             return old;
         })
-
+        loading.current = false;
     }, 3000)
 }
 
@@ -26,11 +28,10 @@ const Page: NextPageWithLayout = () => {
 
     const [videoTagData, setVideoTagData] = useState(Array(26).fill(1));
     const [videoTagPlaceHoderData, setVideoTagPlaceHoderData] = useState(Array(0));
-    const [loading, setLoading] = useState(false);
+    const loading = useRef(false);
     const [load, setLoad] = useState(true);
     useEffect(()=>{
-        window.addEventListener('scroll', ()=>{
-
+        let scrollListener = ()=>{
             const windowHeight =
                 'innerHeight' in window
                     ? window.innerHeight
@@ -45,15 +46,18 @@ const Page: NextPageWithLayout = () => {
                 html.offsetHeight
             );
             const windowBottom = windowHeight + window.pageYOffset;
-            console.log(windowBottom)
-            console.log(documentHeight)
-            if (windowBottom >= documentHeight && !loading && load) {
-                setLoading(true)
-                loadMore(setVideoTagPlaceHoderData,setVideoTagData)
-                setLoading(false)
+            // console.log(windowBottom)
+            // console.log(documentHeight)
+            if (windowBottom >= documentHeight && !loading.current && load) {
+                console.log(`loading:${loading.current}`)
+                loading.current = true;
+                loadMore(setVideoTagPlaceHoderData,setVideoTagData,loading)
             }
-        });
-
+        };
+        window.addEventListener('scroll', scrollListener);
+        return ()=>{
+            window.removeEventListener('scroll', scrollListener);
+        }
     },[])
     return (
         <>

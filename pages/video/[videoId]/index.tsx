@@ -3,7 +3,7 @@ import Layout from "@/pages/layout";
 import {NextPageWithLayout} from "@/pages/_app";
 import {CategoryTag} from "@/components/categoryTag";
 import {useRouter} from "next/router";
-import {MdOutlineKeyboardArrowDown} from "react-icons/md";
+import {MdFlashOn, MdOutlineHdrAuto, MdOutlineKeyboardArrowDown} from "react-icons/md";
 import {PiProhibitBold} from "react-icons/pi";
 import {CiPlay1} from "react-icons/ci";
 import {LiaCommentDotsSolid} from "react-icons/lia";
@@ -12,6 +12,7 @@ import {TiArrowForward} from "react-icons/ti";
 import {FaStar} from "react-icons/fa";
 import {HiMiniCurrencyYen} from "react-icons/hi2";
 import {BiSolidLike} from "react-icons/bi";
+import {IoAddSharp} from "react-icons/io5";
 
 const Page: NextPageWithLayout = () => {
     let router = useRouter();
@@ -33,7 +34,7 @@ const Page: NextPageWithLayout = () => {
                     <div
                         className="videoDescription text-[16px] mt-2  text-gray-500 flex items-center justify-between w-[550px]">
                         <CiPlay1/>
-                        <div> 6.1 万</div>
+                        <div>6.1 万</div>
                         <LiaCommentDotsSolid/>
                         <div>6023</div>
                         <div>2023-11-11 10:25:59</div>
@@ -78,20 +79,23 @@ const Page: NextPageWithLayout = () => {
                         </div>
                     </div>
                     <div className="comment ">
-                        <div className="commentStatic flex items-center justify-between">
+                        <div className="commentStatic flex items-center gap-10">
                             <div className="flex items-center ">
-                                <p className="text-[18px] font-bold">评论</p>
-                                <p className="text-[12px] text-gray-300 ml-1">466</p>
+                                <p className="text-[25px] font-bold">评论</p>
+                                <p className="text-[15px] text-gray-300 ml-1">466</p>
                             </div>
-                            <div className="flex items-center justify-between">
-                                <a className="text-[18px] font-bold">最热</a>
+                            <div className="flex items-center justify-between gap-3">
+                                <a className="text-[20px] hover:text-sky-400">最热</a>
                                 <p>|</p>
-                                <a className="text-[12px] text-gray-300">最新</a>
+                                <a className="text-[20px] text-gray-300 hover:text-sky-400">最新</a>
                             </div>
                         </div>
                         <div className="commentPost flex items-center justify-between w-full">
-                            <input className=""/>
-                            <input type="button" className="bg-blue-400" value="发布"/>
+                            <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="avator w-[50px] h-[50px] rounded-full"/>
+                            <div className="max-h-[100px] min-h-[50px] flex items-center justify-between gap-3 box-border  ">
+                                <textarea className=" rounded-lg bg-gray-200 h-full focus:outline w-[850px] focus:bg-white resize-none	p-2 focus:h-[100px]" placeholder="只是一直在等你"/>
+                                <input type="button" className="bg-sky-400 w-[250px] h-full rounded-lg text-white" value="发布"/>
+                            </div>
                         </div>
                         <div className="commentSection flex items-center justify-between w-full">
                             <div className="userComment flex items-center justify-between w-full">
@@ -129,20 +133,28 @@ const Page: NextPageWithLayout = () => {
                     </div>
                 </div>
                 <div className="rightSiderBar ml-5">
-                    <div className="author flex items-center justify-between">
-                        <div>头像</div>
-                        <div className={"flex flex-col items-center justify-between "}>
-                            <div>用户名</div>
+                    <div className="author flex items-center gap-5">
+                        <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp"
+                             className="avator w-[50px] h-[50px] rounded-full"/>
+                        <div className={"flex flex-col items-start justify-between "}>
+                            <div className="text-[20px]">用户名</div>
                             <div
-                                className="text-gray-400 text-[11px]">深耕核心力（思维力、学习力、人脉力）训练8年，可加微信号youcore12
+                                className="text-gray-400 text-[15px] line-clamp-1 w-[400px]">深耕核心力（思维力、学习力、人脉力）训练8年，可加微信1231313112313号youcore12
                             </div>
-                            <div className="flex items-center justify-between">
-                                <input type="button" value=""/>
-                                <input type="button" value=""/>
+                            <div className="flex items-center justify-between w-[400px] mt-3">
+                                <div className="flex items-center justify-center gap-3  text-[#FF6699]  border-[#FF6699] border rounded-lg px-10 py-1.5 text-[20px]">
+                                    <MdFlashOn />
+                                    <p>充电</p>
+                                </div>
+                                <div className="flex items-center justify-center gap-3 rounded-lg px-10 py-1.5 bg-sky-400 text-white text-[20px]">
+                                    <IoAddSharp />
+                                    <p>关注</p>
+                                    <p>5.6万</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className="barrageList  w-[700px]">
+                    <div className="barrageList  w-[500px] my-5 ">
                         <div
                             className="bg-gray-200 rounded-lg text-[18px]  h-[50px] flex items-center px-5 justify-between"
                             onClick={() => setShowBarrageListDetail((o) => !o)}>
@@ -188,15 +200,29 @@ const Page: NextPageWithLayout = () => {
                             <p>接下来播放</p>
                             <p>自动联播</p>
                         </div>
-                        <div className=" border-b border-solid border-gray-300">
-                            <div className="videoBriefTag flex justify-between items-center">
-                                <img src="/example.png" className="rounded-lg object-cover w-[180px] h-[100px]"/>
-                                <div className="flex flex-col items-center justify-between">
-                                    <div>长大后发现，易中天这段讽刺"统治阶层”的采访，说的全</div>
-                                    <div>123</div>
-                                    <div>123</div>
-                                </div>
-                            </div>
+                        <div className=" border-b border-solid border-gray-300 pb-5 flex flex-col gap-3">
+                            {
+                                Array(6).fill(1).map((item, index) => {
+                                    return (
+                                        <div className="videoBriefTag flex justify-start items-center gap-5">
+                                            <img src="/example.png" className="rounded-lg object-cover w-[200px] h-[100px]"/>
+                                            <div className="flex flex-col items-start justify-between w-[250px] ">
+                                                <div className="line-clamp-2">长大后发现，易中天这段讽刺"统治阶层”的采访，说的全12311212313313</div>
+                                                <div className="flex items-center gap-2 text-gray-400">
+                                                    <MdOutlineHdrAuto />
+                                                    <p>123</p>
+                                                </div>
+                                                <div className="flex items-center gap-3 text-gray-400">
+                                                    <CiPlay1/>
+                                                    <div>6.1 万</div>
+                                                    <LiaCommentDotsSolid/>
+                                                    <div>6023</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
 
                         </div>
                     </div>

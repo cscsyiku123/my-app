@@ -19,7 +19,7 @@ function SearchHistoryTag(props: { name: string }) {
 function NavigateRightCategory(props: { name: string, icon: IconType }) {
     return <div className="flex flex-col items-center h-full gap-0.5 justify-center  ">
         <props.icon className="w-[18px] h-[18px] scale-125 text-gray-700"/>
-        <p className="text-gray-350 font-semibold  text-[12px] text-gray-500">{props.name}</p>
+        <p className="text-gray-350 font-semibold  text-[12px] text-gray-500 hidden md:block">{props.name}</p>
     </div>;
 }
 

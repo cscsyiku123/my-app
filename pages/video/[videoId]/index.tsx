@@ -14,6 +14,44 @@ import {HiMiniCurrencyYen} from "react-icons/hi2";
 import {BiSolidLike} from "react-icons/bi";
 import {IoAddSharp} from "react-icons/io5";
 
+class Comment extends React.Component {
+    render() {
+        return <div className="userComment flex items-start justify-between w-full gap-3  border-b-[1.8px] pb-5  ">
+            <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp"
+                 className="avator w-[50px] h-[50px] rounded-full"/>
+            <div
+                className="comment flex flex-col items-start justify-between bg-bottom border-solid gap-3">
+                <div className=" text-[20px]">用户名</div>
+                <div className="comment text-[18px]">
+                    置顶我们建了个群，重点讨论如何提升个人核心通用能力：思维力、学习力、人脉力。以及解决工作三年以上会碰到的实际问题，如缺乏深度思考、知识零散不成体系、晋升瓶颈、沟通表达不清等。如果你想要进群的话，可以加微信号youcore27，群是免费，但是谢绝广告和干扰
+                </div>
+                <div className="commentInfo flex items-start justify-between text-gray-400 font-normal gap-3">
+                    <p>2023-11-15 13:27</p>
+                    <p>3</p>
+                    <p>回复</p>
+                </div>
+
+                <div className="commentReplySection flex flex-col items-start justify-between ">
+                    <div className="commentReply flex items-start justify-start gap-3">
+                        <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp"
+                             className="avator w-[40px] h-[40px] rounded-full"/>
+                        <div className="comment mb-3">
+                            置顶我们建了个群，重点讨论如何提升个人核心通用能力：思维力、学习力、人脉力。以及解决工作三年以上会碰到的实际问题，如缺乏深度思考、知识零散不成体系、晋升瓶颈、沟通表达不清等。如果你想要进群的话，可以加微信号youcore27，群是免费，但是谢绝广告和干扰
+                        </div>
+                    </div>
+                    <div className="commentInfo flex items-start justify-between text-gray-400 font-normal gap-3">
+                        <p>2023-11-15 13:27</p>
+                        <p>3</p>
+                        <p>回复</p>
+                    </div>
+                </div>
+                <div>共18条回复,点击查看</div>
+                <div>共2页,1 2 下一页</div>
+            </div>
+        </div>;
+    }
+}
+
 const Page: NextPageWithLayout = () => {
     let router = useRouter();
     useEffect(() => {
@@ -41,12 +79,12 @@ const Page: NextPageWithLayout = () => {
                         <PiProhibitBold className="text-red-500"/>
                         <div> 未经作者授权，禁止转载</div>
                     </div>
-                    <div className="videoMain  w-full ">
-                        <video className="w-full h-[500px]  "></video>
-                        <div className="w-full h-[55px] flex items-center justify-between shadow-lg p-5 text-[20px]">
+                    <div className="videoMain  w-full border-b   ">
+                        <video className="w-full h-[700px]  bg-zinc-950 "></video>
+                        <div className="w-full h-[55px] flex items-center justify-between shadow-lg p-5 text-[18px] text-gray-400  my-10">
                             <p>67 人正在看，已装填517条弹幕</p>
                             <div
-                                className="barrang flex items-center justify-between w-[700px] h-[55px] rounded-2xl bg-gray-100 ">
+                                className="barrang flex items-center justify-between w-[700px] h-[55px] rounded-lg bg-gray-200  my-10">
                                 <div className="w-[600px] flex items-center justify-between h-full ">
                                     <RiFontColor className="w-[25px] h-[25px] "/>
                                     <input className="rounded-lg focus:outline-none bg-transparent w-[450px] h-full"
@@ -58,17 +96,17 @@ const Page: NextPageWithLayout = () => {
                             </div>
                         </div>
                         <div
-                            className="bg-bottom border-solid flex items-center justify-start gap-5   h-[50px] border-b-[3px]">
-                            <BiSolidLike/>
+                            className=" border-solid flex items-center justify-start gap-5   h-[100px] border-b text-[20px] text-gray-500 ">
+                            <BiSolidLike className="w-[50px] h-[50px]"/>
                             <div>2544</div>
-                            <HiMiniCurrencyYen/>
+                            <HiMiniCurrencyYen className="w-[50px] h-[50px]"/>
                             <div>2544</div>
-                            <FaStar/>
+                            <FaStar className="w-[50px] h-[50px]"/>
                             <div>2544</div>
-                            <TiArrowForward/>
+                            <TiArrowForward className="w-[50px] h-[50px]"/>
                             <div>2544</div>
                         </div>
-                        <div className="videoDescription">
+                        <div className="videoDescription my-5">
                             主要包含三个部分的内容：财务自由的本质、财务自由者过多的危害，以及拿什么替代财务自由
                         </div>
                         <div className="videoTag flex items-center flex-wrap gap-3">
@@ -78,8 +116,8 @@ const Page: NextPageWithLayout = () => {
                             <CategoryTag tagName="开麦职场人"/>
                         </div>
                     </div>
-                    <div className="comment ">
-                        <div className="commentStatic flex items-center gap-10">
+                    <div className="comment">
+                        <div className="commentStatic flex items-center gap-10 my-10">
                             <div className="flex items-center ">
                                 <p className="text-[25px] font-bold">评论</p>
                                 <p className="text-[15px] text-gray-300 ml-1">466</p>
@@ -90,45 +128,27 @@ const Page: NextPageWithLayout = () => {
                                 <a className="text-[20px] text-gray-300 hover:text-sky-400">最新</a>
                             </div>
                         </div>
-                        <div className="commentPost flex items-center justify-between w-full">
-                            <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="avator w-[50px] h-[50px] rounded-full"/>
-                            <div className="max-h-[100px] min-h-[50px] flex items-center justify-between gap-3 box-border  ">
-                                <textarea className=" rounded-lg bg-gray-200 h-full focus:outline w-[850px] focus:bg-white resize-none	p-2 focus:h-[100px]" placeholder="只是一直在等你"/>
-                                <input type="button" className="bg-sky-400 w-[250px] h-full rounded-lg text-white" value="发布"/>
+                        <div className="commentPost flex items-center justify-between w-full ">
+                            <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp"
+                                 className="avator w-[50px] h-[50px] rounded-full"/>
+                            <div
+                                className="h-[50px] flex items-center justify-between gap-3 box-border  hover:h-[100px] transition-all duration-1000 group">
+                                <textarea
+                                    className=" rounded-lg bg-gray-200 h-full group-hover:outline group-hover:outline-gray-400  focus:outline focus:outline-gray-400  w-[850px]  focus:bg-white hover:bg-white resize-none	p-2 "
+                                    placeholder="只是一直在等你"/>
+                                <input type="button" className="bg-sky-400 w-[250px] h-full rounded-lg text-white"
+                                       value="发布"/>
                             </div>
                         </div>
-                        <div className="commentSection flex items-center justify-between w-full">
-                            <div className="userComment flex items-center justify-between w-full">
-                                <div>头像</div>
-                                <div
-                                    className="comment flex flex-col items-start justify-between bg-bottom border-solid">
-                                    <div className="">用户名</div>
-                                    <div className="comment">
-                                        置顶我们建了个群，重点讨论如何提升个人核心通用能力：思维力、学习力、人脉力。以及解决工作三年以上会碰到的实际问题，如缺乏深度思考、知识零散不成体系、晋升瓶颈、沟通表达不清等。如果你想要进群的话，可以加微信号youcore27，群是免费，但是谢绝广告和干扰
-                                    </div>
-                                    <div className="commentInfo flex items-start justify-between">
-                                        <p>2023-11-15 13:27</p>
-                                        <p>3</p>
-                                        <p>回复</p>
-                                    </div>
+                        <div className="commentSection flex flex-col items-center w-full mt-10 gap-3 ">
 
-                                    <div className="commentReplySection flex flex-col items-start justify-between ">
-                                        <div className="commentReply flex items-center justify-start">
-                                            <div className="">用户名</div>
-                                            <div className="comment">
-                                                置顶我们建了个群，重点讨论如何提升个人核心通用能力：思维力、学习力、人脉力。以及解决工作三年以上会碰到的实际问题，如缺乏深度思考、知识零散不成体系、晋升瓶颈、沟通表达不清等。如果你想要进群的话，可以加微信号youcore27，群是免费，但是谢绝广告和干扰
-                                            </div>
-                                        </div>
-                                        <div className="commentInfo flex items-center justify-between text-gray-300">
-                                            <p>2023-11-15 13:27</p>
-                                            <p>3</p>
-                                            <p>回复</p>
-                                        </div>
-                                    </div>
-                                    <div>共18条回复,点击查看</div>
-                                    <div>共2页,1 2 下一页</div>
-                                </div>
-                            </div>
+                            {
+                                Array(10).fill(1).map((item, index) => {
+                                    return (
+                                        <Comment key={index}/>
+                                    )
+                                })
+                            }
                         </div>
                     </div>
                 </div>
@@ -142,12 +162,14 @@ const Page: NextPageWithLayout = () => {
                                 className="text-gray-400 text-[15px] line-clamp-1 w-[400px]">深耕核心力（思维力、学习力、人脉力）训练8年，可加微信1231313112313号youcore12
                             </div>
                             <div className="flex items-center justify-between w-[400px] mt-3">
-                                <div className="flex items-center justify-center gap-3  text-[#FF6699]  border-[#FF6699] border rounded-lg px-10 py-1.5 text-[20px]">
-                                    <MdFlashOn />
+                                <div
+                                    className="flex items-center justify-center gap-3  text-[#FF6699]  border-[#FF6699] border rounded-lg px-10 py-1.5 text-[20px]">
+                                    <MdFlashOn/>
                                     <p>充电</p>
                                 </div>
-                                <div className="flex items-center justify-center gap-3 rounded-lg px-10 py-1.5 bg-sky-400 text-white text-[20px]">
-                                    <IoAddSharp />
+                                <div
+                                    className="flex items-center justify-center gap-3 rounded-lg px-10 py-1.5 bg-sky-400 text-white text-[20px]">
+                                    <IoAddSharp/>
                                     <p>关注</p>
                                     <p>5.6万</p>
                                 </div>
@@ -205,11 +227,14 @@ const Page: NextPageWithLayout = () => {
                                 Array(6).fill(1).map((item, index) => {
                                     return (
                                         <div className="videoBriefTag flex justify-start items-center gap-5">
-                                            <img src="/example.png" className="rounded-lg object-cover w-[200px] h-[100px]"/>
+                                            <img src="/example.png"
+                                                 className="rounded-lg object-cover w-[200px] h-[100px]"/>
                                             <div className="flex flex-col items-start justify-between w-[250px] ">
-                                                <div className="line-clamp-2">长大后发现，易中天这段讽刺"统治阶层”的采访，说的全12311212313313</div>
+                                                <div
+                                                    className="line-clamp-2">长大后发现，易中天这段讽刺"统治阶层”的采访，说的全12311212313313
+                                                </div>
                                                 <div className="flex items-center gap-2 text-gray-400">
-                                                    <MdOutlineHdrAuto />
+                                                    <MdOutlineHdrAuto/>
                                                     <p>123</p>
                                                 </div>
                                                 <div className="flex items-center gap-3 text-gray-400">

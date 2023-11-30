@@ -13,6 +13,7 @@ import {FaStar} from "react-icons/fa";
 import {HiMiniCurrencyYen} from "react-icons/hi2";
 import {BiSolidLike} from "react-icons/bi";
 import {IoAddSharp} from "react-icons/io5";
+import VideoPlayer from "@/components/videoPlayer";
 
 class Comment extends React.Component {
     render() {
@@ -80,7 +81,9 @@ const Page: NextPageWithLayout = () => {
                         <div> 未经作者授权，禁止转载</div>
                     </div>
                     <div className="videoMain  w-full border-b   ">
-                        <video className="w-full h-[700px]  bg-zinc-950 "></video>
+                        <div className="w-full h-[700px]  bg-zinc-950 ">
+                            <VideoPlayer></VideoPlayer>
+                        </div>
                         <div className="w-full h-[55px] flex items-center justify-between shadow-lg p-5 text-[18px] text-gray-400  my-10">
                             <p>67 人正在看，已装填517条弹幕</p>
                             <div

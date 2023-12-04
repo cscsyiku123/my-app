@@ -29,7 +29,7 @@ export default function () {
     const [searchDetailShow, setSearchDetailShow] = useState(false)
 
     return (
-        <div className="navigate w-full  z-10 bg-white shadow-md flex items-center justify-between h-[75px] min-w-[1920px] sticky  top-0 block ">
+        <div className="navigate w-full  z-50 bg-white shadow-md flex items-center justify-between h-[75px] min-w-[1920px] sticky  top-0 block ">
             <div
                 className="leftNavigate ml-5 flex items-center gap-8 w-[800px] text-[16px]    ">
                 <div className=" group flex items-center relative ">

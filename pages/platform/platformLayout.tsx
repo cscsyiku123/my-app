@@ -64,7 +64,7 @@ export default function PlatformLayout({children}: { children: ReactElement }) {
     ];
     return (
         <Layout>
-            <div className="flex ">
+            <div className="flex h-full">
                 <PlatformLeftSiderBar catalogData={catalogData}/>
                 {children}
             </div>

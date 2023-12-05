@@ -19,7 +19,6 @@ function PlatformLeftSiderBar(props: { catalogData: CatalogData[] }) {
                                  onClick={() => setShowChildren((o) => {
                                      let temp = [...o];
                                      temp[index] = !temp[index];
-                                     console.log(temp)
                                      return temp;
                                  })}>
                                 <item.icon className="w-[25px] h-[25px]"/>

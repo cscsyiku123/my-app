@@ -3,8 +3,6 @@ import React, {ReactElement} from "react";
 import PlatformLayout from "@/pages/platform/platformLayout";
 
 
-
-
 const Page: NextPageWithLayout = () => {
     return (
         <div className="w-full h-full flex items-center justify-center">

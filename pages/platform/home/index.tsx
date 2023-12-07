@@ -1,10 +1,5 @@
 import {NextPageWithLayout} from "@/pages/_app";
-import React, {ReactElement, useState} from "react";
-import Layout from "@/pages/layout";
-import {CatalogData} from "@/lib/entitiy/catalogData";
-import {IoDocumentText} from "react-icons/io5";
-import {MdOutlineKeyboardArrowDown} from "react-icons/md";
-import {UploadButton} from "@/components/uploadButton";
+import React, {ReactElement} from "react";
 import PlatformLayout from "@/pages/platform/platformLayout";
 
 

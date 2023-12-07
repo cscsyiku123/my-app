@@ -9,12 +9,12 @@ import Layout from "@/pages/layout";
 function PlatformLeftSiderBar(props: { catalogData: CatalogData[] }) {
     const [showChildren, setShowChildren] = useState(Array(props.catalogData.length).fill(false));
     return (
-        <div className="leftSiderBar fixed left-0 top-[80px] flex flex-col items-center w-[250px] overflow-auto h-full bg-white">
+        <div className="leftSiderBar fixed left-0 top-[80px] flex flex-col items-center w-[200px] overflow-auto h-full bg-white">
             <UploadButton/>
             {
                 props.catalogData.map((item, index) => {
                     return (
-                        <div className="mt-3 w-full flex flex-col  text-[18px]">
+                        <div className="mt-3 w-full flex flex-col  text-[15px] text-gray-800" key={index}>
                             <div className="flex items-center h-[50px] hover:bg-gray-100  p-5 gap-3" key={index}
                                  onClick={() => setShowChildren((o) => {
                                      let temp = [...o];
@@ -36,7 +36,7 @@ function PlatformLeftSiderBar(props: { catalogData: CatalogData[] }) {
                                     item.children.map((item, index) => {
                                         return (
                                             <div
-                                                className="w-full h-[50px] hover:bg-gray-100  mt-3 flex items-center pl-[50px]">
+                                                className="w-full h-[50px] hover:bg-gray-100  mt-3 flex items-center pl-[50px]" key={index}>
                                                 {item.name}
                                             </div>
                                         )
@@ -64,7 +64,7 @@ export default function PlatformLayout({children}: { children: ReactElement }) {
     ];
     return (
         <Layout>
-            <div className="flex h-full">
+            <div className="flex h-full md:ml-[250px]">
                 <PlatformLeftSiderBar catalogData={catalogData}/>
                 {children}
             </div>

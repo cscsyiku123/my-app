@@ -68,26 +68,28 @@ const Page: NextPageWithLayout = () => {
     return (
         <>
             <div className="w-full h-full flex items-start justify-between">
-                <div className="leftVideo w-[1200px]">
-                    <p className="videoTitle text-[30px] ">财务自由的本质&普通人注定无法实现财务自由</p>
-                    <div
-                        className="videoDescription text-[16px] mt-2  text-gray-500 flex items-center justify-between w-[550px]">
-                        <CiPlay1/>
-                        <div>6.1 万</div>
-                        <LiaCommentDotsSolid/>
-                        <div>6023</div>
-                        <div>2023-11-11 10:25:59</div>
-                        <PiProhibitBold className="text-red-500"/>
-                        <div> 未经作者授权，禁止转载</div>
+                <div className="leftVideo w-[1400px]">
+                    <div className="h-[100px]">
+                        <p className="videoTitle text-[30px] ">财务自由的本质&普通人注定无法实现财务自由</p>
+                        <div
+                            className="videoDescription text-[16px] mt-3  text-gray-500 flex items-center justify-between w-[550px]">
+                            <CiPlay1/>
+                            <div>6.1 万</div>
+                            <LiaCommentDotsSolid/>
+                            <div>6023</div>
+                            <div>2023-11-11 10:25:59</div>
+                            <PiProhibitBold className="text-red-500"/>
+                            <div> 未经作者授权，禁止转载</div>
+                        </div>
                     </div>
-                    <div className="videoMain  w-full border-b   ">
-                        <div className="w-full h-[700px]  bg-zinc-950 ">
+                    <div className="videoMain  w-full border-b mt-5  z-10 ">
+                        <div className="w-full h-[750px]  bg-zinc-950 ">
                             <VideoPlayer></VideoPlayer>
                         </div>
-                        <div className="w-full h-[55px] flex items-center justify-between shadow-lg p-5 text-[18px] text-gray-400  my-10">
+                        <div className="w-full h-[75px] flex items-center justify-between shadow-lg p-5 text-[18px] text-gray-400">
                             <p>67 人正在看，已装填517条弹幕</p>
                             <div
-                                className="barrang flex items-center justify-between w-[700px] h-[55px] rounded-lg bg-gray-200  my-10">
+                                className="barrang flex items-center justify-between w-[700px] h-[55px] rounded-lg bg-gray-200  ">
                                 <div className="w-[600px] flex items-center justify-between h-full ">
                                     <RiFontColor className="w-[25px] h-[25px] "/>
                                     <input className="rounded-lg focus:outline-none bg-transparent w-[450px] h-full"
@@ -109,7 +111,7 @@ const Page: NextPageWithLayout = () => {
                             <TiArrowForward className="w-[50px] h-[50px]"/>
                             <div>2544</div>
                         </div>
-                        <div className="videoDescription my-5">
+                        <div className="videoDescription my-5 text-gray-800 text-[18px]">
                             主要包含三个部分的内容：财务自由的本质、财务自由者过多的危害，以及拿什么替代财务自由
                         </div>
                         <div className="videoTag flex items-center flex-wrap gap-3">
@@ -122,8 +124,8 @@ const Page: NextPageWithLayout = () => {
                     <div className="comment">
                         <div className="commentStatic flex items-center gap-10 my-10">
                             <div className="flex items-center ">
-                                <p className="text-[25px] font-bold">评论</p>
-                                <p className="text-[15px] text-gray-300 ml-1">466</p>
+                                <p className="text-[30px]  ">评论</p>
+                                <p className="text-[15px] text-gray-400 ml-1">466</p>
                             </div>
                             <div className="flex items-center justify-between gap-3">
                                 <a className="text-[20px] hover:text-sky-400">最热</a>
@@ -135,9 +137,9 @@ const Page: NextPageWithLayout = () => {
                             <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp"
                                  className="avator w-[50px] h-[50px] rounded-full"/>
                             <div
-                                className="h-[50px] flex items-center justify-between gap-3 box-border  hover:h-[100px] transition-all duration-1000 group">
+                                className=" h-[50px] flex items-center justify-between gap-3 box-border  hover:h-[80px] transition-all duration-1000 group">
                                 <textarea
-                                    className=" rounded-lg bg-gray-200 h-full group-hover:outline group-hover:outline-gray-400  focus:outline focus:outline-gray-400  w-[850px]  focus:bg-white hover:bg-white resize-none	p-2 "
+                                    className=" rounded-lg bg-gray-200 h-full group-hover:outline group-hover:outline-gray-400  focus:outline focus:outline-gray-400  w-[1070px]  focus:bg-white hover:bg-white resize-none	p-2 "
                                     placeholder="只是一直在等你"/>
                                 <input type="button" className="bg-sky-400 w-[250px] h-full rounded-lg text-white"
                                        value="发布"/>
@@ -156,7 +158,7 @@ const Page: NextPageWithLayout = () => {
                     </div>
                 </div>
                 <div className="rightSiderBar ml-5">
-                    <div className="author flex items-center gap-5">
+                    <div className="author flex items-center gap-5 h-[100px]">
                         <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp"
                              className="avator w-[50px] h-[50px] rounded-full"/>
                         <div className={"flex flex-col items-start justify-between "}>

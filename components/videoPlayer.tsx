@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css'
-import './index.css';
 import {FaPause, FaPlay} from "react-icons/fa";
 import {IoPlaySkipBack, IoPlaySkipForward} from "react-icons/io5";
 import {RiPictureInPictureFill} from "react-icons/ri";

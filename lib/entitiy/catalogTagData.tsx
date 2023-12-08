@@ -1,12 +1,12 @@
 import {IconType} from "react-icons/lib/cjs/iconBase";
 
-export class CatalogData {
+export class CatalogTagData {
     id: number;
     name :string;
     link: string;
     icon: IconType;
-    children: Array<CatalogData>;
-    constructor(id: number, name: string, link: string, icon: IconType, children: Array<CatalogData>) {
+    children: Array<CatalogTagData>;
+    constructor(id: number, name: string, link: string, icon: IconType, children: Array<CatalogTagData>) {
         this.id = id;
         this.name = name;
         this.link = link;

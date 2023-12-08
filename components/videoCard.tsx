@@ -1,6 +1,6 @@
 import React from "react";
 
-export function VideoTag() {
+export function VideoCard() {
     return <div className="videoTag flex flex-col min-w-[250px] max-w-[350px] h-[300px] rounded-[8px]  justify-between pb-1 font-medium">
         <img src="example.png" className="object-cover rounded-[8px]"/>
         <div className=" ">9.0分超越《无证之罪》，国产悬疑扛鼎之作？全集解说《沉默的真相》</div>

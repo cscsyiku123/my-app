@@ -51,7 +51,7 @@ export default function () {
             <div
                 className="searchTopBar h-[40px] w-[500px] bg-gray-50 rounded-lg flex items-center justify-around hover:bg-white relative border-2 border-solid p-1 transition-colors duration-700">
                 <input
-                    className="focus:bg-gray-200 rounded-[5px] w-full h-full bg-transparent  focus:outline-none placeholder:font-normal placeholder-gray-300 text-gray-500  w-[250px] font-light"
+                    className="focus:bg-gray-200 rounded-[5px] w-full h-full bg-transparent  focus:outline-none  placeholder-gray-300 text-gray-500  w-[250px] font-light"
                     type="text" placeholder="T1训练营" onBlur={() => setSearchDetailShow(false)}
                     onFocus={() => setSearchDetailShow(true)}/>
                 <IoIosSearch className="h-[30px] w-[30px] p-1 rounded  hover:bg-gray-200 z-10"/>

@@ -1,12 +1,12 @@
 import Navigate from "@/components/navigate";
 import React, {ReactElement, ReactNode, useState} from "react";
 import {useRouter} from "next/router";
-import {CatalogData} from "@/lib/entitiy/catalogData";
+import {CatalogTagData} from "@/lib/entitiy/catalogTagData";
 import {UploadButton} from "@/components/uploadButton";
 import {MdOutlineKeyboardArrowDown} from "react-icons/md";
 import {IoDocumentText} from "react-icons/io5";
 import Layout from "@/pages/layout";
-function PlatformLeftSiderBar(props: { catalogData: CatalogData[] }) {
+function PlatformLeftSiderBar(props: { catalogData: CatalogTagData[] }) {
     const [showChildren, setShowChildren] = useState(Array(props.catalogData.length).fill(false));
     return (
         <div className="leftSiderBar fixed left-0 top-[80px] flex flex-col items-center w-[200px] overflow-auto h-full bg-white">
@@ -53,14 +53,14 @@ function PlatformLeftSiderBar(props: { catalogData: CatalogData[] }) {
 }
 export default function PlatformLayout({children}: { children: ReactElement }) {
     const router = useRouter()
-    let catalogData = [new CatalogData(1, "首页", "", IoDocumentText, []),
-        new CatalogData(2, "内容管理", "", IoDocumentText,
-            [new CatalogData(1, "稿件管理", "", IoDocumentText, []),
-                new CatalogData(1, "申诉管理", "", IoDocumentText, []),
-                new CatalogData(1, "字幕管理", "", IoDocumentText, [])]),
-        new CatalogData(3, "互动管理", "", IoDocumentText,
-            [new CatalogData(1, "评论管理", "", IoDocumentText, []),
-                new CatalogData(1, "弹幕管理", "", IoDocumentText, [])])
+    let catalogData = [new CatalogTagData(1, "首页", "", IoDocumentText, []),
+        new CatalogTagData(2, "内容管理", "", IoDocumentText,
+            [new CatalogTagData(1, "稿件管理", "", IoDocumentText, []),
+                new CatalogTagData(1, "申诉管理", "", IoDocumentText, []),
+                new CatalogTagData(1, "字幕管理", "", IoDocumentText, [])]),
+        new CatalogTagData(3, "互动管理", "", IoDocumentText,
+            [new CatalogTagData(1, "评论管理", "", IoDocumentText, []),
+                new CatalogTagData(1, "弹幕管理", "", IoDocumentText, [])])
     ];
     return (
         <Layout>

@@ -3,10 +3,10 @@ import {IoDocumentText} from "react-icons/io5";
 import Layout from "@/pages/layout";
 import {NextPageWithLayout} from "@/pages/_app";
 import {CategoryTag} from "@/components/categoryTag";
-import {VideoTag} from "@/components/videoTag";
+import {VideoCard} from "@/components/videoCard";
 import {Swiper} from "@/components/swiper";
 import {SwiperData} from "@/lib/entitiy/swiperData";
-import {VideoTagPlaceHoder} from "@/components/videoTagPlaceHoder";
+import {VideoCardPlaceHoder} from "@/components/videoCardPlaceHoder";
 
 
 function loadMore(setVideoTagPlaceHoderData: (value: (((prevState: any[]) => any[]) | any[])) => void, setVideoTagData: (value: (((prevState: any[]) => any[]) | any[])) => void, loading: React.MutableRefObject<boolean>) {
@@ -126,13 +126,13 @@ const Page: NextPageWithLayout = () => {
 
                 {
                     videoTagData.map((item, index) => {
-                        return <VideoTag/>
+                        return <VideoCard/>
                     })
                 }
 
                 {
                     videoTagPlaceHoderData.map((item, index) => {
-                        return <VideoTagPlaceHoder/>
+                        return <VideoCardPlaceHoder/>
                     })
                 }
 

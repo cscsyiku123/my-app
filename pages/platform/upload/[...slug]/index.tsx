@@ -1,5 +1,5 @@
 import {NextPageWithLayout} from "@/pages/_app";
-import React, {ReactElement, useEffect, useRef, useState} from "react";
+import React, {Dispatch, ReactElement, SetStateAction, useEffect, useRef, useState} from "react";
 import PlatformLayout from "@/pages/platform/platformLayout";
 import {useRouter} from "next/router";
 import {UploadNavigate} from "@/lib/entitiy/uploadNavigate";
@@ -8,6 +8,10 @@ import {FileUploadData} from "@/lib/entitiy/fileUploadData";
 import {transHumanByteSize, transHumanTime} from "@/lib/utils";
 import {BsFillFileEarmarkPlayFill} from "react-icons/bs";
 import {VideoTagData} from "@/lib/entitiy/videoTagData";
+import {RadioBoxData} from "@/lib/entitiy/radioBoxData";
+import {CheckBoxData} from "@/lib/entitiy/checkBoxData";
+import {SelectBoxData} from "@/lib/entitiy/selectBoxData";
+import {MdOutlineKeyboardArrowDown} from "react-icons/md";
 
 
 // const createPost = async () => {
@@ -38,13 +42,190 @@ import {VideoTagData} from "@/lib/entitiy/videoTagData";
 
 function VideoTag(props: { item: VideoTagData, onClick?: () => void, withIcon?: boolean, withCloseIcon?: boolean }) {
     return <div
-        className={"flex items-center justify-center bg-gray-100  px-4 py-1 rounded text-[12px] hover:bg-sky-500 hover:text-white"}
+        className={"flex items-center justify-center bg-gray-100  px-4 py-1 rounded text-[12px] hover:bg-sky-500 hover:text-white cursor-pointer"}
         style={{
             backgroundColor: `${props.item.checked ? "rgb(14 165 233)" : ""}`,
             color: `${props.item.checked ? "#fff" : ""}`
         }}
         onClick={props.onClick}
     >{`${props.item.name}${props.withCloseIcon ? " ×" : ""}`}</div>;
+}
+
+function SildeButton({slideButtonSelected, setSlideButtonSelected}: { slideButtonSelected: boolean, setSlideButtonSelected: Dispatch<SetStateAction<boolean>> }) {
+    return (
+        <div className={" bg-gray-200 flex items-center  px-1 transition-all duration-1000 rounded-3xl w-[50px] h-[25px] relative"}
+             onClick={() => {
+                 setSlideButtonSelected((old) => {
+                     return !old
+                 })
+             }}
+             style={{
+                 backgroundColor: `${slideButtonSelected ? "rgb(56 189 248)" : ""}`,
+             }}
+        >
+            <div className={"bg-white rounded-full w-[18px] h-[18px] absolute  transition-all duration-500 "}
+                 style={
+                     slideButtonSelected ? {left: "28px"} : {left: "5px"}
+                 }
+            ></div>
+        </div>
+    )
+}
+
+function RadioBox({radioBoxData, setRadioBoxSelectedIndex, radioBoxSelectedIndex}: { radioBoxData: RadioBoxData[], setRadioBoxSelectedIndex: Dispatch<SetStateAction<number>>, radioBoxSelectedIndex: number }) {
+    return (
+        <div className={'flex items-center gap-5'}>
+            {
+                radioBoxData.map((item, index) => {
+                    return (
+                        <div className={'gap-1 flex items-center'}
+                             onClick={() => {
+                                 setRadioBoxSelectedIndex(index)
+                             }}
+                        >
+                            <div className={' w-[16px] h-[16px] rounded-full border border-gray-500 flex items-center justify-center'}>
+                                <div className={'w-[0px] h-[0px] rounded-full bg-sky-400 transition-all duration-100'}
+                                     style={
+                                         radioBoxSelectedIndex == index ?
+                                             {
+                                                 width: '12px',
+                                                 height: '12px',
+                                             } : {}
+                                     }
+                                >
+                                </div>
+                            </div>
+                            <label>{item.name}</label>
+                        </div>
+                    )
+                })
+            }
+        </div>
+    );
+}
+
+function CheckBox({checkBoxData, setCheckBoxSelectedIndex, checkBoxSelectedIndex}: { checkBoxData: CheckBoxData[], setCheckBoxSelectedIndex: Dispatch<SetStateAction<number>>, checkBoxSelectedIndex: number }) {
+    return (
+        <div className={'flex items-center gap-5'}>
+            {
+                checkBoxData.map((item, index) => {
+                    return (
+                        <div className={'gap-1 flex items-center'}
+                             onClick={() => {
+                                 setCheckBoxSelectedIndex((old) => {
+                                     return old == index ? -1 : index
+                                 })
+                             }}
+                        >
+                            <div className={' w-[16px] h-[16px]  border border-gray-500 flex items-center justify-center'}
+                                 style={
+                                     checkBoxSelectedIndex == index ?
+                                         {
+                                             backgroundColor: 'rgb(14 165 233)',
+                                         } : {}
+                                 }
+                            >
+                                {
+                                    checkBoxSelectedIndex == index && <p className={'text-white text-[14px] '}>√</p>
+                                }
+                            </div>
+                            <label>{item.name}</label>
+                        </div>
+                    )
+                })
+            }
+        </div>
+    );
+}
+
+function SelectBox({state}: { state: [SelectBoxData[], Dispatch<SetStateAction<SelectBoxData[]>>] }) {
+    const [selectBoxData, setSelectBoxData] = state
+    const [showChildren, setShowChildren] = useState(false);
+    const [parentText, setParentText] = useState('影视');
+    const [childText, setChildText] = useState('影视杂谈');
+    const [selectBoxIndex, setSelectBoxIndex] = useState<number[]>([1,1]);
+    useEffect(() => {
+        console.log(selectBoxIndex)
+    },selectBoxIndex)
+
+    useEffect(() => {
+        document.addEventListener('click', (e) => {
+            if (e.target instanceof HTMLElement) {
+                if (!e.target.closest('.selectBox')) {
+                    setShowChildren(false)
+                }
+            }
+        })
+    },[])
+    return (
+        <div className={'selectBox relative'}>
+            <div className={'flex items-center justify-between hover:border-sky-400 border w-[300px] h-[35px] p-3  text-gray-700'}
+                 onClick={() => {
+                     setShowChildren((old) => {
+                         return !old
+                     })
+                 }}
+                 style={
+                     showChildren ? {borderColor: 'rgb(56 189 248)'} : {}
+                 }
+            >
+                {`${parentText} → ${childText}`}
+                <MdOutlineKeyboardArrowDown
+                    className={`transition-all w-[22px] h-[22px] text-gray-400 duration-500 ${!showChildren && "rotate-180"}`}/>
+            </div>
+            <div className={'hidden absolute top-[40px] left-0 bg-white border border-gray-300 rounded h-[200px]  flex   gap-3 rounded  whitespace-nowrap'}
+                 style={
+                     showChildren ? {display: 'block'} : {}
+                 }
+            >
+                <div className={'flex h-full '}>
+                    <div className={'overflow-y-auto  flex flex-col   border-r w-[100px] gap-2 overflow-x-hidden'}>
+                        {
+                            selectBoxData.map((item, index) => {
+                                return (
+                                    <div className={'flex items-center flex-shrink-0 hover:bg-gray-100 w-[100px] h-[45px]  pl-5'}
+                                         onClick={() => {
+                                             setSelectBoxIndex((old) => {
+                                                 old[0] = index
+                                                 return [...old]
+                                             })
+                                         }}
+                                         style={
+                                             selectBoxIndex[0] == index ? {color: 'rgb(56 189 248)'} : {}
+                                         }
+                                    >
+                                        {item.name}
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                    <div className={'overflow-y-auto    '}>
+                        {
+                            selectBoxData[selectBoxIndex[0]].children?.map((item, index) => {
+                                return (
+                                    <div className={'flex items-center gap-3 h-[45px]  pl-5 hover:bg-gray-100 inline-block'}
+                                         onClick={() => {
+                                             setSelectBoxIndex((old) => {
+                                                 old[1] = index
+                                                 return [...old]
+                                             })
+                                             setShowChildren(false)
+                                             setParentText(selectBoxData[selectBoxIndex[0]].name)
+                                             setChildText(selectBoxData[selectBoxIndex[0]].children?.[selectBoxIndex[1]].name ?? "")
+                                         }}
+                                    >
+                                        <div>{item.name}</div>
+                                        <div className={'text-gray-400 text-[12px]'}>{item.description}</div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 function FileUploadSection() {
@@ -94,8 +275,88 @@ function FileUploadSection() {
         }
     }, [brief])
 
-    const [slideButton, setSlideButton] = useState(false)
+    const [slideButtonSelected, setSlideButtonSelected] = useState(false)
+    const [radioBoxSelectedIndex, setRadioBoxSelectedIndex] = useState(0)
 
+    let radioBoxData = [
+        new RadioBoxData(1, "自制"),
+        new RadioBoxData(2, "转载"),
+    ]
+
+    const [rePrintCheckBoxSelectedIndex, setRePrintCheckBoxSelectedIndex] = useState<number>(-1)
+
+    let rePrintCheckBoxData = [
+        new CheckBoxData(1, "允许二创"),
+    ]
+    const [popCheckBoxSelectedIndex, setPopCheckBoxSelectedIndex] = useState<number>(-1)
+
+    let popCheckBoxData = [
+        new CheckBoxData(1, "增加商业推广信息"),
+    ]
+
+    const [reprint, setReprint] = useState('')
+    useEffect(() => {
+        if (reprint.length > 80) {
+            setReprint(title.slice(0, 80))
+        }
+    }, [setReprint])
+    const selectBoxData = useState<SelectBoxData[]>([
+        new SelectBoxData(1, "影视", null, [
+                new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+                new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+                new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+                new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+                new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+                new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+                new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+                new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+                new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+                new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+                new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等音等音等音等音等音等音等音等音等音等音等音等音等音等音等音等', null),
+            ]
+        ),
+        new SelectBoxData(1, "影视1", null, [
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+        ]),
+        new SelectBoxData(1, "影视2", null, [
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+        ]),
+        new SelectBoxData(1, "影视2", null, [
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+        ]),
+        new SelectBoxData(1, "影视2", null, [
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+        ]),
+        new SelectBoxData(1, "影视2", null, [
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+            new SelectBoxData(1, "影视杂谈", '影视评论、解说、吐槽、科普、配音等', null),
+        ])
+    ]);
+    ;
     return (
         <div>
             {
@@ -111,7 +372,7 @@ function FileUploadSection() {
             }
             {
                 fileData &&
-                <div className='uploadingSection flex flex-col items-start justify-start h-full w-full gap-3'>
+                <div className='uploadingSection flex flex-col items-start justify-start h-full w-full gap-8'>
                     <div>{fileData.name}</div>
                     <div className='flex items-center '>
                         <div>
@@ -132,14 +393,16 @@ function FileUploadSection() {
                         </div>
                     </div>
                     <div className={'flex items-center gap-10'}>
-                        <p className={' font-medium text-gray-700'}>基本设置</p>
-                        <input type={'button'} className={'border border-gray-300 text-gray-500 rounded text-[12px] px-5 py-1'} value={'一键填写'}/>
+                        <p className={' font-bold text-gray-700'}>基本设置</p>
+                        <input type={'button'} className={'border border-gray-300 text-gray-500 rounded text-[12px] px-5 py-1 cursor-pointer'} value={'一键填写'}/>
                     </div>
                     <div className={'flex items-center gap-10'}>
                         <div className={'flex items-center gap-1'}>
                             <p className={' text-red-500'}>*</p>
                             <p>封面</p>
                         </div>
+                        <img src={'/example.png'} className={'w-[220px] h-[150px] rounded cursor-pointer'}/>
+
                     </div>
                     <div className={'flex items-center gap-10'}>
                         <div className={'flex items-center gap-1'}>
@@ -147,10 +410,10 @@ function FileUploadSection() {
                             <p>标题</p>
                         </div>
                         <div className={' border border-gray-300 flex px-3 py-2 items-center rounded w-[800px] justify-between hover:border hover:border-sky-500 text-[14px]'}>
-                            <input type={'text'} placeholder={'清晰明了'} className={' placeholder-gray-300 focus:outline-none border-none w-full'} onChange={(e) => {
-                                setBrief(e.target.value)
+                            <input type={'text'} placeholder={'清晰明了'} className={' placeholder-gray-300 focus:outline-none border-none w-full bg-transparent'} onChange={(e) => {
+                                setTitle(e.target.value)
                             }}></input>
-                            <div className={'text-gray-500'}>{`${brief.length}/80`}</div>
+                            <div className={'text-gray-500'}>{`${title.length}/80`}</div>
                         </div>
                     </div>
                     <div className={'flex items-center gap-10'}>
@@ -158,23 +421,31 @@ function FileUploadSection() {
                             <p className={' text-red-500'}>*</p>
                             <p>类型</p>
                         </div>
-                        <div className={'flex items-center gap-5'}>
-                            <div className={'gap-1 flex items-center'}>
-                                <input type="radio" id="option1" name="options" checked={true} className={'w-[20px] h-[20px] checked:bg-red-300 p-0'}></input>
-                                <label htmlFor="option1">自制</label>
-                            </div>
-                            <div className={'gap-1 flex items-center'}>
-                                <input type="radio" id="option2" name="options"></input>
-                                <label htmlFor="option2">转载</label>
-                            </div>
-                        </div>
+                        {
+                            <RadioBox radioBoxData={radioBoxData} setRadioBoxSelectedIndex={setRadioBoxSelectedIndex} radioBoxSelectedIndex={radioBoxSelectedIndex}/>
+                        }
                     </div>
                     <div className={'flex items-start   gap-10'}>
                         <div className={'flex items-center gap-1'}>
                             <p className={' text-red-500'}>*</p>
                             <p>分区</p>
                         </div>
-                        <div>下拉框</div>
+                        <div>
+                            {
+
+                                radioBoxSelectedIndex == 0 &&
+                                <SelectBox state={selectBoxData}></SelectBox>
+                                ||
+                                radioBoxSelectedIndex == 1 && <div className={' border border-gray-300 flex px-3 py-2 items-center rounded w-[800px] justify-between hover:border hover:border-sky-500 text-[14px]'}>
+                                    <input type={'text'} placeholder={'转载视频请注明来源'} className={' placeholder-gray-300 focus:outline-none border-none w-full bg-transparent'} onChange={(e) => {
+                                        setReprint(e.target.value)
+                                    }}></input>
+                                    <div className={'text-gray-500'}>{`${reprint.length}/200`}</div>
+                                </div>
+
+                            }
+
+                        </div>
                     </div>
                     <div className={'flex items-start  gap-10'}>
                         <div className={'flex items-start justify-start  gap-1'}>
@@ -183,7 +454,7 @@ function FileUploadSection() {
                         </div>
                         <div className={'flex flex-col gap-3'}>
                             <div className={' border border-gray-300 flex px-3 py-2 items-center rounded w-[800px] justify-between hover:border hover:border-sky-500 text-[14px]'}>
-                                <div placeholder={'清晰明了'} className={'gap-3 flex items-start placeholder-gray-300 focus:outline-none border-none w-[600px]'}>
+                                <div className={'gap-3 flex items-start placeholder-gray-300 focus:outline-none border-none w-[600px]'}>
                                     {
                                         tag.filter((item) => {
                                             return item.checked
@@ -227,7 +498,6 @@ function FileUploadSection() {
                                                     item.checked = !item.checked
                                                     setTag([...tag])
                                                 }}
-
                                                 />
                                             )
                                         })
@@ -239,41 +509,30 @@ function FileUploadSection() {
                     <div className={'flex items-start gap-10'}>
                         <p>简介</p>
                         <div className={'flex flex-col items-end'}>
-                            <textarea className="text-[14px] rounded-lg  h-full outline-none border border-gray-300 w-[800px] placeholder-gray-400 resize-none p-2  h-[200px]" placeholder="填写更详细的信息，让别人关注到你" onChange={(e) => {
+                            <textarea className="text-[14px] rounded-lg   outline-none border border-gray-300 w-[800px] placeholder-gray-400 resize-none p-4  h-[200px] bg-transparent" placeholder="填写更详细的信息，让别人关注到你" onChange={(e) => {
                                 setBrief(e.target.value)
                             }}/>
-                            <div>{`${brief.length}/2000`}</div>
+                            <div className={'text-gray-500 text-[14px]'}>{`${brief.length}/2000`}</div>
                         </div>
                     </div>
                     <div className={'flex items-center gap-10'}>
                         <p>定时发布</p>
                         <div className={'flex gap-3'}>
-                            <div className={' bg-gray-100 flex px-1 transition-all duration-150 rounded-3xl w-[50px] h-[25px] relative'}
-                                onClick={()=>{setSlideButton((old)=>{ return !old})}}
-                                 style={{
-                                        backgroundColor: `${slideButton ? "rgb(56 189 248)" : ""}`,
-                                 }}
-                            >
-                                <div className={'bg-white rounded-full w-[23px] h-[23px] absolute left-0'}
-                                style={{
-                                    right: `${slideButton ? "0" : ""}`,
-                                }}
-                                ></div>
-                            </div>
+                            <SildeButton slideButtonSelected={slideButtonSelected} setSlideButtonSelected={setSlideButtonSelected}/>
                             <div>(当前+2小时 ≤ 可选时间 ≤ 当前+15天，定时发布一经选择不支持修改/取消)</div>
                         </div>
                     </div>
                     <div className={'flex items-center gap-10'}>
                         <p>二创设置</p>
-                        <div>允许二创</div>
+                        <CheckBox checkBoxData={rePrintCheckBoxData} setCheckBoxSelectedIndex={setRePrintCheckBoxSelectedIndex} checkBoxSelectedIndex={rePrintCheckBoxSelectedIndex}/>
                     </div>
                     <div className={'flex items-center gap-10'}>
                         <p>商业推广</p>
-                        <div>增加商业推广信息</div>
+                        <CheckBox checkBoxData={popCheckBoxData} setCheckBoxSelectedIndex={setPopCheckBoxSelectedIndex} checkBoxSelectedIndex={popCheckBoxSelectedIndex}/>
                     </div>
-                    <div className={'flex items-center gap-10'}>
-                        <p>更多设置</p>
-                        <p>（含声明与权益、视频元素、互动管理等）</p>
+                    <div className={'flex items-center gap-10  font-[600] '}>
+                        <p className={''}>更多设置</p>
+                        <p className={' text-gray-400'}>（含声明与权益、视频元素、互动管理等）</p>
                     </div>
                     <div className=' flex items-center gap-5'>
                         <input type='button' className='flex items-center justify-center rounded w-[130px] h-[45px] border border-gray-300' value='存草稿'/>
@@ -329,7 +588,6 @@ const Page: NextPageWithLayout = () => {
                         uploadNavigateIndex === 0 && <FileUploadSection/>
                         || <div>{navigateData[uploadNavigateIndex].name}</div>
                     }
-
 
                 </div>
             </div>

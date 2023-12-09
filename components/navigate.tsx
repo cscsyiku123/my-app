@@ -1,13 +1,13 @@
 import React, {useState} from "react";
 import {MdOutlineKeyboardArrowDown, MdOutlineMailOutline} from "react-icons/md";
 import {IoIosSearch} from "react-icons/io";
-import {HiOutlineUpload} from "react-icons/hi";
 import {IconType} from "react-icons/lib";
 import {RiVipCrown2Line} from "react-icons/ri";
 import {TbBulb, TbWindmill} from "react-icons/tb";
 import {FaRegStar} from "react-icons/fa";
 import {LiaHistorySolid} from "react-icons/lia";
 import {UploadButton} from "@/components/uploadButton";
+import {useRouter} from "next/router";
 
 function SearchHistoryTag(props: { name: string }) {
     return (
@@ -17,22 +17,24 @@ function SearchHistoryTag(props: { name: string }) {
 }
 
 function NavigateRightCategory(props: { name: string, icon: IconType }) {
-    return <div className="flex flex-col items-center h-full gap-0.5 justify-center  ">
+    return <div className="flex flex-col items-center h-full  justify-center  ">
         <props.icon className="w-[18px] h-[18px] scale-125 text-gray-700"/>
-        <p className="text-gray-350 font-semibold  text-[12px] text-gray-500 hidden md:block">{props.name}</p>
+        <p className="text-gray-350 font-semibold  text-[12px] text-gray-500 hidden xl:block">{props.name}</p>
     </div>;
 }
 
 
-
 export default function () {
     const [searchDetailShow, setSearchDetailShow] = useState(false)
-
+    const router = useRouter()
     return (
-        <div className="navigate w-full  z-50 bg-white shadow-md flex items-center justify-between h-[75px] min-w-[1920px] sticky  top-0 block ">
-            <div
-                className="leftNavigate ml-5 flex items-center gap-8 w-[800px] text-[16px]    ">
-                <div className=" group flex items-center relative ">
+        <div className="navigate w-full  z-50 bg-white shadow-md flex items-center justify-between h-[75px]  sticky  top-0   ">
+            <div className="leftNavigate flex items-center justify-around min-w-[450px] w-[700px]  text-[16px]  cursor-pointer ">
+                <div className=" group flex items-center relative "
+                     onClick={() => {
+                         router.push('/')
+                     }}
+                >
                     <p>首页</p>
                     <MdOutlineKeyboardArrowDown className="transition-all duration-500 group-hover:rotate-180"/>
                     <div
@@ -48,8 +50,7 @@ export default function () {
                 <div>赛事</div>
                 <div>下载客户端</div>
             </div>
-            <div
-                className="searchTopBar h-[40px] w-[500px] bg-gray-50 rounded-lg flex items-center justify-around hover:bg-white relative border-2 border-solid p-1 transition-colors duration-700">
+            <div className="searchTopBar  h-[40px] min-w-[300px] w-[700px] bg-gray-50 rounded-lg flex items-center justify-around hover:bg-white relative border-2 border-solid p-1 transition-colors duration-700">
                 <input
                     className="focus:bg-gray-200 rounded-[5px] w-full h-full bg-transparent  focus:outline-none  placeholder-gray-300 text-gray-500  w-[250px] font-light"
                     type="text" placeholder="T1训练营" onBlur={() => setSearchDetailShow(false)}
@@ -93,16 +94,14 @@ export default function () {
                     </div>
                 }
             </div>
-            <div className="rightNavigate flex items-center justify-between w-[500px] h-full">
-                <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp"
-                     className="avator w-[40px] h-[40px] rounded-full"/>
+            <div className="rightNavigate flex items-center justify-between min-w-[500px]  w-[500px] h-full">
+                <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="avator w-[40px] h-[40px] rounded-full"/>
                 <NavigateRightCategory name={"大会员"} icon={RiVipCrown2Line}/>
                 <NavigateRightCategory name={"消息"} icon={MdOutlineMailOutline}/>
                 <NavigateRightCategory name={"动态"} icon={TbWindmill}/>
                 <NavigateRightCategory name={"收藏"} icon={FaRegStar}/>
                 <NavigateRightCategory name={"历史"} icon={LiaHistorySolid}/>
                 <NavigateRightCategory name={"创作中心"} icon={TbBulb}/>
-
 
                 <UploadButton/>
             </div>

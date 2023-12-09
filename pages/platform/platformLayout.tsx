@@ -9,7 +9,7 @@ import Layout from "@/pages/layout";
 function PlatformLeftSiderBar(props: { catalogData: CatalogTagData[] }) {
     const [showChildren, setShowChildren] = useState(Array(props.catalogData.length).fill(false));
     return (
-        <div className="leftSiderBar fixed left-0 top-[80px] flex flex-col items-center w-[200px] overflow-auto h-full bg-white">
+        <div className="leftSiderBar flex flex-col items-center w-[200px] overflow-auto  bg-white  fixed left-0 h-full hidden xl:flex">
             <UploadButton/>
             {
                 props.catalogData.map((item, index) => {
@@ -64,7 +64,7 @@ export default function PlatformLayout({children}: { children: ReactElement }) {
     ];
     return (
         <Layout>
-            <div className="flex h-full md:ml-[250px]">
+            <div className="flex justify-center flex-shrink-0 min-w-[1280px] bg-gray-50 min-h-[calc(100vh-85px)] w-full">
                 <PlatformLeftSiderBar catalogData={catalogData}/>
                 {children}
             </div>

@@ -67,8 +67,8 @@ const Page: NextPageWithLayout = () => {
 
     return (
         <>
-            <div className="w-full h-full flex items-start justify-between">
-                <div className="leftVideo w-[1400px]">
+            <div className=" h-full flex items-start justify-between max-w-[1920px] w-full ">
+                <div className="leftVideo w-[1400px] flex flex-col">
                     <div className="h-[100px]">
                         <p className="videoTitle text-[30px] ">财务自由的本质&普通人注定无法实现财务自由</p>
                         <div

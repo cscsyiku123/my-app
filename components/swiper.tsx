@@ -16,7 +16,7 @@ export function Swiper(props: { swiperDataList: Array<SwiperData>, }) {
         }
     }, [])
     return <div
-        className="homeSwiper w-[716px] h-[550px]  relative flex items-center justify-center col-span-2 row-span-2 ">
+        className="homeSwiper min-w-[500px]  h-[550px]    col-span-2 row-span-2 relative ">
         <div className="w-full h-full overflow-hidden  rounded-[8px]">
             <div className={` h-full border-solid transition-all duration-500`}
                  style={{

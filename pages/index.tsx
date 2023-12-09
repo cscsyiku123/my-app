@@ -60,9 +60,9 @@ const Page: NextPageWithLayout = () => {
         }
     },[])
     return (
-        <>
-            <div className="homeCategory flex items-center justify-between text-gray-700 max-w-[1920px] py-5">
-                <div className="leftCategory flex items-center justify-between w-[200px] border-gray-200 mx-10">
+        <div className={'    w-full  max-w-[1920px]'}>
+            <div className="homeCategory flex items-center justify-between text-gray-700    py-5">
+                <div className="leftCategory flex items-center justify-between w-[150px] border-gray-200 mx-5 flex-shrink-0">
                     <div className="flex flex-col items-center justify-between h-full">
                         <img src="/img_1.png"
                              className="w-[75px] h-[75px] rounded-full"/>
@@ -75,7 +75,7 @@ const Page: NextPageWithLayout = () => {
                     </div>
                 </div>
                 <div
-                    className="centerCategory flex items-center justify-around w-[1500px] border-x border-x-gray-300 h-[100px] flex-wrap px-5">
+                    className="centerCategory grid grid-rows-2  grid-flow-col gap-3  w-[1500px]   border-x border-x-gray-300 h-[100px]  px-5 ">
                     {
                         ["番剧", "电影", "国创", "电视剧", "综艺", "纪录片", "动画", "游戏", "鬼畜", "音乐", "舞蹈", "影视", "娱乐", "知识", "科技", "资讯", "美食", "生活", "汽车", "时尚", "运动", "更多"].map((item, index) => {
                             return <CategoryTag tagName={item} key={index}/>
@@ -83,28 +83,28 @@ const Page: NextPageWithLayout = () => {
                     }
                 </div>
                 <div
-                    className="rightCategory flex items-center justify-between flex-wrap w-[250px] font-medium text-gray-400">
-                    <div className="flex items-center justify-between ml-3">
+                    className="rightCategory grid grid-rows-2  grid-flow-col  min-w-[250px]  font-medium text-gray-400">
+                    <div className="flex items-center justify-start ml-3">
                         <IoDocumentText/>
                         <p className="ml-1.5 text-gray-700 text-[14px]">专栏</p>
                     </div>
-                    <div className="flex items-center justify-between  ml-3">
+                    <div className="flex items-center justify-start  ml-3">
                         <IoDocumentText/>
                         <p className="ml-1.5 text-gray-700 text-[14px]  ml-3">活动</p>
                     </div>
-                    <div className="flex items-center justify-between  ml-3">
+                    <div className="flex items-center justify-start  ml-3">
                         <IoDocumentText/>
                         <p className="ml-1.5 text-gray-700 text-[14px]">社区中心</p>
                     </div>
-                    <div className="flex items-center justify-between  ml-3">
+                    <div className="flex items-center justify-start  ml-3">
                         <IoDocumentText/>
                         <p className="ml-1.5 text-gray-700 text-[14px] ">直播</p>
                     </div>
-                    <div className="flex items-center justify-between  ml-3">
+                    <div className="flex items-center justify-start  ml-3">
                         <IoDocumentText/>
                         <p className="ml-1.5 text-gray-700 text-[14px]">课堂</p>
                     </div>
-                    <div className="flex items-center justify-between  ml-3">
+                    <div className="flex items-center justify-start  ml-3">
                         <IoDocumentText/>
                         <p className="ml-1.5 text-gray-700 text-[14px]">新歌热榜</p>
                     </div>
@@ -115,7 +115,7 @@ const Page: NextPageWithLayout = () => {
 
 
             {/*</div>*/}
-            <div className="mainPost max-w-[1920px] grid-cols-5 grid gap-4">
+            <div className="mainPost  grid-cols-5 grid gap-4">
                 <Swiper swiperDataList={Array(
                     new SwiperData(1, "2", "123", "/img.png", ""),
                     new SwiperData(2, "2", "123", "/img.png", ""),
@@ -137,7 +137,7 @@ const Page: NextPageWithLayout = () => {
                 }
 
             </div>
-        </>
+        </div>
     )
 }
 

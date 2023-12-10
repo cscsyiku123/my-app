@@ -38,7 +38,7 @@ export default function () {
                     <p>首页</p>
                     <MdOutlineKeyboardArrowDown className="transition-all duration-500 group-hover:rotate-180"/>
                     <div
-                        className="z-10 absolute -bottom-[75px] transition-all duration-500 opacity-0 group-hover:opacity-100 w-[500px] p-5 border-2 border-gray-300 border-solid shadow bg-white">
+                        className="z-10 absolute -bottom-[75px] transition-all duration-500 opacity-0 hidden group-hover:block group-hover:opacity-100 w-[500px] p-5 border-2 border-gray-300 border-solid shadow bg-white">
                     </div>
                 </div>
                 <div>番剧</div>

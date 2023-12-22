@@ -42,7 +42,7 @@ import {MdOutlineKeyboardArrowDown} from "react-icons/md";
 
 function VideoTag(props: { item: VideoTagData, onClick?: () => void, withIcon?: boolean, withCloseIcon?: boolean }) {
     return <div
-        className={"flex items-center justify-center bg-gray-100  px-4 py-1 rounded text-[12px] hover:bg-sky-500 hover:text-white cursor-pointer"}
+        className={"flex items-center justify-center bg-gray-100  px-4 py-1 rounded text-[12px] hover:bg-sky-500 hover:text-white cursor-pointer select-none"}
         style={{
             backgroundColor: `${props.item.checked ? "rgb(14 165 233)" : ""}`,
             color: `${props.item.checked ? "#fff" : ""}`
@@ -106,7 +106,7 @@ function RadioBox({radioBoxData, setRadioBoxSelectedIndex, radioBoxSelectedIndex
 
 function CheckBox({checkBoxData, setCheckBoxSelectedIndex, checkBoxSelectedIndex}: { checkBoxData: CheckBoxData[], setCheckBoxSelectedIndex: Dispatch<SetStateAction<number>>, checkBoxSelectedIndex: number }) {
     return (
-        <div className={'flex items-center gap-5'}>
+        <div className={'flex items-center gap-5 '}>
             {
                 checkBoxData.map((item, index) => {
                     return (
@@ -117,16 +117,17 @@ function CheckBox({checkBoxData, setCheckBoxSelectedIndex, checkBoxSelectedIndex
                                  })
                              }}
                         >
-                            <div className={' w-[16px] h-[16px]  border border-gray-500 flex items-center justify-center'}
+                            <div className={' w-[16px] h-[16px]  border border-gray-500 flex items-center justify-center cursor-pointer select-none'}
                                  style={
                                      checkBoxSelectedIndex == index ?
                                          {
                                              backgroundColor: 'rgb(14 165 233)',
+                                             border:"none"
                                          } : {}
                                  }
                             >
                                 {
-                                    checkBoxSelectedIndex == index && <p className={'text-white text-[14px] '}>√</p>
+                                    checkBoxSelectedIndex == index && <div className={'text-white text-[14px]  '}>✔</div>
                                 }
                             </div>
                             <label>{item.name}</label>
@@ -158,7 +159,7 @@ function SelectBox({state}: { state: [SelectBoxData[], Dispatch<SetStateAction<S
         })
     },[])
     return (
-        <div className={'selectBox relative'}>
+        <div className={'selectBox relative select-none'}>
             <div className={'flex items-center justify-between hover:border-sky-400 border w-[300px] h-[35px] p-3  text-gray-700'}
                  onClick={() => {
                      setShowChildren((old) => {

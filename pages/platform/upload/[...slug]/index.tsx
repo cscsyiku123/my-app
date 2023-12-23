@@ -5,7 +5,7 @@ import {useRouter} from "next/router";
 import {UploadNavigate} from "@/lib/entitiy/uploadNavigate";
 import Link from "next/link";
 import {FileUploadData} from "@/lib/entitiy/fileUploadData";
-import {transHumanByteSize, transHumanTime} from "@/lib/utils";
+import {transHumanByteSize, transHumanTime} from "@/lib/util/utils";
 import {BsFillFileEarmarkPlayFill} from "react-icons/bs";
 import {VideoTagData} from "@/lib/entitiy/videoTagData";
 import {RadioBoxData} from "@/lib/entitiy/radioBoxData";

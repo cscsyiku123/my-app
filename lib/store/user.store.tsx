@@ -1,27 +1,35 @@
 import {persist} from 'zustand/middleware'
 import {create} from 'zustand'
 import axios from 'axios'
-import useSWR from "swr";
 import {TResponse} from "@/lib/entitiy/TResponse";
-import useSWRImmutable from "swr/immutable";
-
-
-
-const fetcher = (url: string, data?: any) => {
-    axios.defaults.withCredentials = true;
-    axios.defaults.baseURL = 'http://localhost:3100/api/pn'
-    console.log('请求 axios ')
-    return axios.post(url, data).then(e => e.data)
+let userStorage = 'user-storage';
+axios.defaults.baseURL = 'http://localhost:3100/api/pn'
+axios.interceptors.request.use(
+// axios.defaults.withCredentials = true;
+function (config) {
+        const accessToken = getLocalStory<{accessToken:string}>(userStorage)?.accessToken;
+        console.log(`accessToken:${accessToken}`)
+        if (accessToken) {
+            config.headers['Authorization'] = `Bearer ${accessToken}`;
+        }
+        return config;
+    },
+    function (error) {
+        return Promise.reject(error);
+    }
+);
+ async function fetcher<T, R>(url: string, data?: R) {
+    return await axios.post<TResponse<T>>(url, data).then(e => e.data);
 }
 
-function getUser() {
-    const {data, error} = useSWR<TResponse<User>>({url: '/navigation', data: null}, fetcher)
-    return data
+ function apiLogin<R>(request: R) {
+     return  fetcher<{ accessToken: string }, R>('/auth/signIn', request);
+}
+function apiUserProfile<R>(request: R) {
+    return fetcher<UserVo, R>('/user/profile', request);
 }
 
 
-
-export {getUser};
 
 export class AuthRequest {
     signInType: AccountSignUpType;
@@ -41,7 +49,19 @@ export enum AccountSignUpType {
     SMS,
 }
 
-class User {
+
+
+function getLocalStory<T>(key: string):T|null {
+    let item = localStorage.getItem(key);
+    if (item){
+        let s = JSON.parse(item) as {state:T};
+        return s.state
+    }
+    return null;
+}
+
+
+class UserVo {
     userId: number;
     userName: string;
     avatarImageLink: string;
@@ -54,35 +74,46 @@ class User {
 }
 
 interface UserState {
-    user: User;
+    user: UserVo;
     accessToken: string;
-    getUser: () => User | null;
-    login: (authRequest: AuthRequest) => { accessToken: string };
+    actionLogin:  (authRequest: AuthRequest) => Promise<{ accessToken: string }>;
+}
+import { useState, useEffect } from 'react'
+import {Result} from "postcss";
+
+const useStore = <T, F>(
+    store: (callback: (state: T) => unknown) => unknown,
+    callback: (state: T) => F,
+) => {
+    const result = store(callback) as F
+    const [data, setData] = useState<F>()
+
+    useEffect(() => {
+        setData(result)
+    }, [result])
+
+    return data
 }
 
+export default useStore
 export const useUserStore = create<UserState>()(
     // devtools(
     persist(
         (set, get) => ({
-            user: null as unknown as User,
+            user: null as unknown as UserVo,
             accessToken: '',
-            getUser: () => {
-                if (get().user) {
-                    return get().user
-                }
-
-                // set({user: null})
-                return get().user
-            },
-            login: (authRequest: AuthRequest) => {
-                // let apilogin1 = apilogin(authRequest);
-                // set({ accessToken: apilogin1?.data.accessToken})
+            actionLogin: async (authRequest: AuthRequest) => {
+                let result =  await apiLogin(authRequest);
+                let accessToken = result?.data.accessToken;
+                set({ accessToken: accessToken})
+                let tResponse =await apiUserProfile(accessToken);
+                set({user: tResponse?.data})
                 return {accessToken: get().accessToken};
             }
         }),
 
         {
-            name: 'user-storage',
+            name: userStorage,
         },
     ),
     // ),

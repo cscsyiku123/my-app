@@ -1,30 +1,23 @@
-import {AccountSignUpType, AuthRequest} from "@/lib/store/user.store";
-import {useState} from "react";
-import useSWRImmutable from "swr/immutable";
-import {TResponse} from "@/lib/entitiy/TResponse";
-import axios from "axios";
-import {SWRConfig} from "swr";
-axios.defaults.baseURL = 'http://localhost:3100/api/pn'
 
-const fetcher = (url: string, data?: any) => {
-    console.log(`url:${url}`)
-    return axios.post(url, data).then(e => e.data)
-}
 
-export function apilogin(authRequest: AuthRequest) {
-    console.log(authRequest)
-    const {data, error, isLoading,mutate } = useSWRImmutable<TResponse<{ accessToken: string }>>(authRequest? [ 'auth/signIn', authRequest]:null,([url, authRequest]) => fetcher(url, authRequest))
-    return {
-        data,mutate
-    }
-}
+import useStore, {AccountSignUpType, AuthRequest, useUserStore} from "@/lib/store/user.store";
+
 
 
 export default function () {
-    const [loginRequest, setLoginRequest] = useState<AuthRequest>(null as unknown as AuthRequest);
-    let {data,mutate} = apilogin(loginRequest);
+    let accessToken = useStore(useUserStore, (state) => state.accessToken);
+    let user = useStore(useUserStore, (state) => state.user);
+   let {actionLogin} = useUserStore();
 
     return <div>
-        <div key={"123"} onClick={()=>setLoginRequest(new AuthRequest(0,"123","123"))}>hello !:{data?.data.accessToken}</div>
+        <div key={"123"} onClick={()=>actionLogin(new AuthRequest(0,"123","123"))}>123{accessToken}</div>
+        <div>{accessToken}</div>
+        <div>{accessToken}</div>
+        <div>{accessToken}</div>
+        <div>{accessToken}</div>
+        <div>{accessToken}</div>
+        <div>{accessToken}</div>
+        <div>{accessToken}</div>
+        <div>user:{user?.userName}</div>
     </div>
 }

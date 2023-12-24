@@ -1,18 +1,22 @@
 import React from "react";
 import {useRouter} from "next/router";
+import {VideoVo} from "@/lib/utils/api/RemoteSwaggerService";
+import {formatTime, transHumanNumber} from "@/lib/util/utils";
 
-export function VideoCard() {
-    const  route = useRouter();
+export function VideoCard(props: { video: VideoVo }) {
+    const route = useRouter();
     return <div className="videoTag flex flex-col min-w-[250px] max-w-[350px] max-h-[300px] rounded-[8px]  justify-between pb-1 font-medium cursor-pointer"
-        onClick={()=>{
-            route.push(`/video/${1}`)
-        }}
+                onClick={() => {
+                    route.push(`/video/${props.video.id}`)
+                }}
     >
-        <img src="example.png" className="object-cover rounded-[8px]"/>
-        <div className=" ">9.0分超越《无证之罪》，国产悬疑扛鼎之作？全集解说《沉默的真相》</div>
+        <img src={props.video.coverImageLink} className="object-cover rounded-[8px]"/>
+        <div className=" ">{props.video.name}</div>
         <div className=" text-gray-300 text-[12px] pl-2">
-            <div className="text-orange-500 bg-orange-200 inline">1万点赞</div>
-            <div className=" inline-block ml-1">若雨随影· 10-12</div>
+            {
+                props.video.likeCount >= 10000 && <div className="text-orange-500 bg-orange-200 inline">{transHumanNumber(props.video.likeCount)}点赞</div>
+            }
+            <div className=" inline-block ml-1">{props.video.authorName}· {formatTime(props.video.createTime, 'MM-dd')}</div>
         </div>
     </div>;
 }

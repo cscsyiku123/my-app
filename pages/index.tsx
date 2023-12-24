@@ -7,6 +7,7 @@ import {VideoCard} from "@/components/videoCard";
 import {Swiper} from "@/components/swiper";
 import {SwiperData} from "@/lib/entitiy/swiperData";
 import {VideoCardPlaceHoder} from "@/components/videoCardPlaceHoder";
+import {findVideoByAuthorId, findVideoByRecommand, VideoVo} from "@/lib/utils/api/RemoteSwaggerService";
 
 
 function loadMore(setVideoTagPlaceHoderData: (value: (((prevState: any[]) => any[]) | any[])) => void, setVideoTagData: (value: (((prevState: any[]) => any[]) | any[])) => void, loading: React.MutableRefObject<boolean>) {
@@ -26,11 +27,22 @@ function loadMore(setVideoTagPlaceHoderData: (value: (((prevState: any[]) => any
 
 const Page: NextPageWithLayout = () => {
 
-    const [videoTagData, setVideoTagData] = useState(Array(26).fill(1));
+    const [videoTagData, setVideoTagData] = useState<VideoVo[]>(Array(0));
     const [videoTagPlaceHoderData, setVideoTagPlaceHoderData] = useState(Array(0));
     const loading = useRef(false);
     const [load, setLoad] = useState(true);
     useEffect(()=>{
+        findVideoByRecommand({
+            requestBody: {
+                page :{
+                    pageIndex: 1,
+                    pageSize: 10
+                }
+            }}).then((value => {
+            setVideoTagData(value.data)
+        }))
+
+
         let scrollListener = ()=>{
             const windowHeight =
                 'innerHeight' in window
@@ -48,7 +60,7 @@ const Page: NextPageWithLayout = () => {
             const windowBottom = windowHeight + window.pageYOffset;
             // console.log(windowBottom)
             // console.log(documentHeight)
-            if (windowBottom >= documentHeight && !loading.current && load) {
+            if (windowBottom+100 >= documentHeight && !loading.current && load) {
                 console.log(`loading:${loading.current}`)
                 loading.current = true;
                 loadMore(setVideoTagPlaceHoderData,setVideoTagData,loading)
@@ -60,7 +72,7 @@ const Page: NextPageWithLayout = () => {
         }
     },[])
     return (
-        <div className={'    w-full  max-w-[1920px]'}>
+        <div className={'w-full  max-w-[1920px]'}>
             <div className="homeCategory flex items-center justify-between text-gray-700    py-5">
                 <div className="leftCategory flex items-center justify-between w-[150px] border-gray-200 mx-5 flex-shrink-0">
                     <div className="flex flex-col items-center justify-between h-full">
@@ -126,7 +138,7 @@ const Page: NextPageWithLayout = () => {
 
                 {
                     videoTagData.map((item, index) => {
-                        return <VideoCard/>
+                        return <VideoCard video={item}/>
                     })
                 }
 

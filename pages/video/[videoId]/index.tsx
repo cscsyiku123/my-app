@@ -14,70 +14,91 @@ import {HiMiniCurrencyYen} from "react-icons/hi2";
 import {BiSolidLike} from "react-icons/bi";
 import {IoAddSharp} from "react-icons/io5";
 import VideoPlayer from "@/components/videoPlayer";
+import {
+    BarrageEntity, CommentVo,
+    findBarrageBySecondRang,
+    findVideoByVideoId,
+    VideoEntity
+} from "@/lib/utils/api/RemoteSwaggerService";
 
-class Comment extends React.Component {
+class Comment extends React.Component<{ commentData: CommentVo }> {
     render() {
         return <div className="userComment flex items-start justify-between w-full gap-3  border-b-[1.8px] pb-5  ">
             <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp"
                  className="avator w-[50px] h-[50px] rounded-full"/>
             <div
                 className="comment flex flex-col items-start justify-between bg-bottom border-solid gap-3">
-                <div className=" text-[20px]">用户名</div>
+                <div className=" text-[20px]">{this.props.commentData.commentatorName}</div>
                 <div className="comment text-[18px]">
-                    置顶我们建了个群，重点讨论如何提升个人核心通用能力：思维力、学习力、人脉力。以及解决工作三年以上会碰到的实际问题，如缺乏深度思考、知识零散不成体系、晋升瓶颈、沟通表达不清等。如果你想要进群的话，可以加微信号youcore27，群是免费，但是谢绝广告和干扰
+                    {this.props.commentData.commentContent}
                 </div>
                 <div className="commentInfo flex items-start justify-between text-gray-400 font-normal gap-3">
-                    <p>2023-11-15 13:27</p>
-                    <p>3</p>
+                    <p>{this.props.commentData.createTime}</p>
+                    <p>{this.props.commentData.likeCount}</p>
                     <p>回复</p>
                 </div>
+                {
+                    this.props.commentData.childrenComment.map((item, index) => {
+                        return (
+                            <div className="commentReplySection flex flex-col items-start justify-between ">
+                                <div className="commentReply flex items-start justify-start gap-3">
+                                    <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp"
+                                         className="avator w-[40px] h-[40px] rounded-full"/>
+                                    <div className="comment mb-3">
+                                        {item.commentContent}
+                                    </div>
+                                </div>
+                                <div className="commentInfo flex items-start justify-between text-gray-400 font-normal gap-3">
+                                    <p>{item.createTime}</p>
+                                    <p>3</p>
+                                    <p>回复</p>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
 
-                <div className="commentReplySection flex flex-col items-start justify-between ">
-                    <div className="commentReply flex items-start justify-start gap-3">
-                        <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp"
-                             className="avator w-[40px] h-[40px] rounded-full"/>
-                        <div className="comment mb-3">
-                            置顶我们建了个群，重点讨论如何提升个人核心通用能力：思维力、学习力、人脉力。以及解决工作三年以上会碰到的实际问题，如缺乏深度思考、知识零散不成体系、晋升瓶颈、沟通表达不清等。如果你想要进群的话，可以加微信号youcore27，群是免费，但是谢绝广告和干扰
-                        </div>
-                    </div>
-                    <div className="commentInfo flex items-start justify-between text-gray-400 font-normal gap-3">
-                        <p>2023-11-15 13:27</p>
-                        <p>3</p>
-                        <p>回复</p>
-                    </div>
-                </div>
-                <div>共18条回复,点击查看</div>
+                <div>共{this.props.commentData.childrenComment.length}条回复,点击查看</div>
                 <div>共2页,1 2 下一页</div>
             </div>
         </div>;
     }
 }
 
+
 const Page: NextPageWithLayout = () => {
     let router = useRouter();
     useEffect(() => {
         var {isReady, query: {videoId}} = router
         if (isReady) {
-            console.log(videoId)
+            findVideoByVideoId({requestBody:{videoId:Number(videoId)}}).then((res) => {
+                setVideoData(res.data)
+            })
+            findBarrageBySecondRang({requestBody:{postId:Number(videoId),postType:"0",startSecond:0,endSecond:videoData?.secondDuration??0}}).then((res) => {
+                setBarrageData(res.data)
+            })
+
         }
     }, [router.query]);
 
     const [showBarrageListDetail, setShowBarrageListDetail] = useState(false)
-
+    const [videoData, setVideoData] = useState<VideoEntity>();
+    const [barrageData, setBarrageData] = useState<BarrageEntity[]>();
+    const [commentData, setCommentData] = useState<CommentVo[]>();
 
     return (
         <>
             <div className=" h-full flex items-start justify-between max-w-[1920px] w-full ">
                 <div className="leftVideo w-[1400px] flex flex-col">
                     <div className="h-[100px]">
-                        <p className="videoTitle text-[30px] ">财务自由的本质&普通人注定无法实现财务自由</p>
+                        <p className="videoTitle text-[30px] ">{videoData?.name}</p>
                         <div
                             className="videoDescription text-[16px] mt-3  text-gray-500 flex items-center justify-between w-[550px]">
                             <CiPlay1/>
-                            <div>6.1 万</div>
+                            <div>{videoData?.playCount}</div>
                             <LiaCommentDotsSolid/>
-                            <div>6023</div>
-                            <div>2023-11-11 10:25:59</div>
+                            <div>{videoData?.commentCount}</div>
+                            <div>{videoData?.createTime}</div>
                             <PiProhibitBold className="text-red-500"/>
                             <div> 未经作者授权，禁止转载</div>
                         </div>
@@ -112,20 +133,27 @@ const Page: NextPageWithLayout = () => {
                             <div>2544</div>
                         </div>
                         <div className="videoDescription my-5 text-gray-800 text-[18px]">
-                            主要包含三个部分的内容：财务自由的本质、财务自由者过多的危害，以及拿什么替代财务自由
+                            {videoData?.brief}
                         </div>
                         <div className="videoTag flex items-center flex-wrap gap-3">
-                            <CategoryTag tagName="开麦职场人"/>
-                            <CategoryTag tagName="开麦职场人"/>
-                            <CategoryTag tagName="开麦职场人"/>
-                            <CategoryTag tagName="开麦职场人"/>
+                            {
+                                videoData?.categoryTag.split(",").map((item, index) => {
+                                    return (
+                                        <CategoryTag key={index} tagName={item}/>
+                                    )
+                                })
+                            }
+                            {/*<CategoryTag tagName="开麦职场人"/>*/}
+                            {/*<CategoryTag tagName="开麦职场人"/>*/}
+                            {/*<CategoryTag tagName="开麦职场人"/>*/}
+                            {/*<CategoryTag tagName="开麦职场人"/>*/}
                         </div>
                     </div>
                     <div className="comment">
                         <div className="commentStatic flex items-center gap-10 my-10">
                             <div className="flex items-center ">
                                 <p className="text-[30px]  ">评论</p>
-                                <p className="text-[15px] text-gray-400 ml-1">466</p>
+                                <p className="text-[15px] text-gray-400 ml-1">{videoData?.commentCount}</p>
                             </div>
                             <div className="flex items-center justify-between gap-3">
                                 <a className="text-[20px] hover:text-sky-400">最热</a>
@@ -139,15 +167,14 @@ const Page: NextPageWithLayout = () => {
                             <div
                                 className=" h-[50px] flex items-center justify-between gap-3 box-border  hover:h-[80px] transition-all duration-1000 group">
                                 <textarea className=" rounded-lg bg-gray-200 h-full group-hover:outline group-hover:outline-gray-400  focus:outline focus:outline-gray-400  w-[1070px]  focus:bg-white hover:bg-white resize-none	p-2 " placeholder="只是一直在等你"/>
-                                <input type="button" className="bg-sky-400 w-[250px] h-full rounded-lg text-white" value="发布"/>
+                                <input type="button" className="bg-sky-400 w-[250px] h-full rounded-lg text-white" value="发布" />
                             </div>
                         </div>
                         <div className="commentSection flex flex-col items-center w-full mt-10 gap-3 ">
-
                             {
-                                Array(10).fill(1).map((item, index) => {
+                                commentData?.map((item, index) => {
                                     return (
-                                        <Comment key={index}/>
+                                        <Comment  commentData={item}/>
                                     )
                                 })
                             }
@@ -205,12 +232,12 @@ const Page: NextPageWithLayout = () => {
                                 </thead>
                                 <tbody>
                                 {
-                                    Array(60).fill(1).map((item, index) => {
+                                    barrageData?.map((item, index) => {
                                         return (
                                             <tr key={index}>
                                                 <td>01:56</td>
-                                                <td className="text-gray-800 w-[350px] line-clamp-1	break-all">12311313131313131313131312313131231321312321313313131331231313131313133</td>
-                                                <td>11-12 02:34</td>
+                                                <td className="text-gray-800 w-[350px] line-clamp-1	break-all">{item.commentContent}</td>
+                                                <td>{item.createTime}</td>
                                             </tr>
                                         )
                                     })

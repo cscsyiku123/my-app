@@ -185,7 +185,7 @@ const Page: NextPageWithLayout = () => {
                                  className="avator w-[50px] h-[50px] rounded-full"/>
                             <div
                                 className=" h-[50px] flex items-center justify-between gap-3 box-border  hover:h-[80px] transition-all duration-1000 group">
-                                <textarea className=" rounded-lg bg-gray-200 h-full group-hover:outline group-hover:outline-gray-400  focus:outline focus:outline-gray-400  w-[1070px]  focus:bg-white hover:bg-white resize-none	p-2 " placeholder="只是一直在等你" onChange={(e)=>setCommentContent(e.target.value)}/>
+                                <textarea value={commentContent} className=" rounded-lg bg-gray-200 h-full group-hover:outline group-hover:outline-gray-400  focus:outline focus:outline-gray-400  w-[1070px]  focus:bg-white hover:bg-white resize-none	p-2 " placeholder="只是一直在等你" onChange={(e)=>setCommentContent(e.target.value)}/>
                                 <input type="button" className="bg-sky-400 w-[250px] h-full rounded-lg text-white cursor-pointer" value="发布" onClick={()=>postComment()} />
                             </div>
                         </div>

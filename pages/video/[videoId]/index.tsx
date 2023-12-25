@@ -79,6 +79,7 @@ const Page: NextPageWithLayout = () => {
                         return [res.data]
                     }
                 })
+                setCommentContent("")
             }
         })
     }

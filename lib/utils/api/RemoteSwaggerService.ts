@@ -4,7 +4,7 @@ import { fetcher } from './fetcher';
   {
     requestBody: CommentRequest;
   },
-  CommentEntity
+  CommentVo
 >("createComment", ({ requestBody }) => ({
   url: `/api/pn/comment/replyComment`,
   method: "POST",
@@ -198,55 +198,37 @@ export type BarrageEntityPostType = "0" | "1";
 export type BarrageEntityValidStatus = "0" | "1";
 
 export interface BarrageRequest {
-  barrageId: number;
-  commentContent: string;
-  commentatorId: number;
-  endSecond: number;
-  postId: number;
-  postType: BarrageRequestPostType;
-  secondAppears: number;
-  startSecond: number;
+  barrageId?: number;
+  commentContent?: string;
+  commentatorId?: number;
+  endSecond?: number;
+  postId?: number;
+  postType?: BarrageRequestPostType;
+  secondAppears?: number;
+  startSecond?: number;
 }
 
 export type BarrageRequestPostType = "0" | "1";
 
-export interface CommentEntity {
-  commentContent: string;
-  commentatorId: number;
-  createTime: string;
-  id: number;
-  likeCount: number;
+export interface CommentRequest {
+  childrenComment?: CommentRequest[];
+  commentContent?: string;
+  commentId?: number;
+  commentatorAvatarImageLink?: string;
+  commentatorId?: number;
+  commentatorName?: number;
+  createTime?: string;
+  likeCount?: number;
+  page?: Page;
   parentCommentId?: number;
   parentCommentatorId?: number;
-  postId: number;
-  postType: CommentEntityPostType;
-  rootCommentId?: number;
-  unlikeCount: number;
-  updateTime: string;
-  validStatus: CommentEntityValidStatus;
+  parentCommentatorName?: number;
+  postId?: number;
+  postType?: CommentRequestPostType;
+  unlikeCount?: number;
 }
 
-export type CommentEntityPostType = "0" | "1";
-
-export type CommentEntityValidStatus = "0" | "1";
-
-export interface CommentRequest {
-  childrenComment: CommentRequest[];
-  commentContent: string;
-  commentId: number;
-  commentatorAvatarImageLink: string;
-  commentatorId: number;
-  commentatorName: number;
-  create_time: string;
-  likeCount: number;
-  page: Page;
-  parentCommentId?: number;
-  parentCommentatorId: number;
-  parentCommentatorName: number;
-  postId: number;
-  postType: number;
-  unlikeCount: number;
-}
+export type CommentRequestPostType = "0" | "1";
 
 export interface CommentVo {
   childrenComment: CommentVo[];

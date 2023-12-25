@@ -15,10 +15,9 @@ import {BiSolidLike} from "react-icons/bi";
 import {IoAddSharp} from "react-icons/io5";
 import VideoPlayer from "@/components/videoPlayer";
 import {
-    BarrageEntity, CommentVo,
+    BarrageEntity, CommentVo, createComment,
     findBarrageBySecondRang,
-    findVideoByVideoId,
-    VideoEntity
+    findVideoByVideoId, VideoVo
 } from "@/lib/utils/api/RemoteSwaggerService";
 
 class Comment extends React.Component<{ commentData: CommentVo }> {
@@ -38,7 +37,7 @@ class Comment extends React.Component<{ commentData: CommentVo }> {
                     <p>回复</p>
                 </div>
                 {
-                    this.props.commentData.childrenComment.map((item, index) => {
+                    this.props.commentData.childrenComment?.map((item, index) => {
                         return (
                             <div className="commentReplySection flex flex-col items-start justify-between ">
                                 <div className="commentReply flex items-start justify-start gap-3">
@@ -58,7 +57,7 @@ class Comment extends React.Component<{ commentData: CommentVo }> {
                     })
                 }
 
-                <div>共{this.props.commentData.childrenComment.length}条回复,点击查看</div>
+                <div>共{this.props.commentData.childrenComment?.length}条回复,点击查看</div>
                 <div>共2页,1 2 下一页</div>
             </div>
         </div>;
@@ -66,11 +65,30 @@ class Comment extends React.Component<{ commentData: CommentVo }> {
 }
 
 
+
+
 const Page: NextPageWithLayout = () => {
     let router = useRouter();
+    function postComment() {
+        createComment({requestBody:{commentContent:commentContent,postId:videoId,postType:"0",parentCommentId:parentCommentId}}).then((res) => {
+            if (res.success) {
+                setCommentData((o) => {
+                    if (o){
+                        return [res.data,...o ]
+                    }else{
+                        return [res.data]
+                    }
+                })
+            }
+        })
+    }
+
+    const [videoId, setVideoId] = useState<number>(0);
+    const [parentCommentId, setParentCommentId] = useState();
     useEffect(() => {
         var {isReady, query: {videoId}} = router
         if (isReady) {
+            setVideoId(Number(videoId))
             findVideoByVideoId({requestBody:{videoId:Number(videoId)}}).then((res) => {
                 setVideoData(res.data)
             })
@@ -82,10 +100,10 @@ const Page: NextPageWithLayout = () => {
     }, [router.query]);
 
     const [showBarrageListDetail, setShowBarrageListDetail] = useState(false)
-    const [videoData, setVideoData] = useState<VideoEntity>();
+    const [videoData, setVideoData] = useState<VideoVo>();
     const [barrageData, setBarrageData] = useState<BarrageEntity[]>();
     const [commentData, setCommentData] = useState<CommentVo[]>();
-
+    const [commentContent, setCommentContent] = useState<string>();
     return (
         <>
             <div className=" h-full flex items-start justify-between max-w-[1920px] w-full ">
@@ -124,13 +142,13 @@ const Page: NextPageWithLayout = () => {
                         <div
                             className=" border-solid flex items-center justify-start gap-5   h-[100px] border-b text-[20px] text-gray-500 ">
                             <BiSolidLike className="w-[50px] h-[50px]"/>
-                            <div>2544</div>
+                            <div>{videoData?.likeCount}</div>
                             <HiMiniCurrencyYen className="w-[50px] h-[50px]"/>
                             <div>2544</div>
                             <FaStar className="w-[50px] h-[50px]"/>
-                            <div>2544</div>
+                            <div>{videoData?.followCount}</div>
                             <TiArrowForward className="w-[50px] h-[50px]"/>
-                            <div>2544</div>
+                            <div>{videoData?.shareCount}</div>
                         </div>
                         <div className="videoDescription my-5 text-gray-800 text-[18px]">
                             {videoData?.brief}
@@ -166,8 +184,8 @@ const Page: NextPageWithLayout = () => {
                                  className="avator w-[50px] h-[50px] rounded-full"/>
                             <div
                                 className=" h-[50px] flex items-center justify-between gap-3 box-border  hover:h-[80px] transition-all duration-1000 group">
-                                <textarea className=" rounded-lg bg-gray-200 h-full group-hover:outline group-hover:outline-gray-400  focus:outline focus:outline-gray-400  w-[1070px]  focus:bg-white hover:bg-white resize-none	p-2 " placeholder="只是一直在等你"/>
-                                <input type="button" className="bg-sky-400 w-[250px] h-full rounded-lg text-white" value="发布" />
+                                <textarea className=" rounded-lg bg-gray-200 h-full group-hover:outline group-hover:outline-gray-400  focus:outline focus:outline-gray-400  w-[1070px]  focus:bg-white hover:bg-white resize-none	p-2 " placeholder="只是一直在等你" onChange={(e)=>setCommentContent(e.target.value)}/>
+                                <input type="button" className="bg-sky-400 w-[250px] h-full rounded-lg text-white cursor-pointer" value="发布" onClick={()=>postComment()} />
                             </div>
                         </div>
                         <div className="commentSection flex flex-col items-center w-full mt-10 gap-3 ">

@@ -12,6 +12,7 @@ import {RadioBoxData} from "@/lib/entitiy/radioBoxData";
 import {CheckBoxData} from "@/lib/entitiy/checkBoxData";
 import {SelectBoxData} from "@/lib/entitiy/selectBoxData";
 import {MdOutlineKeyboardArrowDown} from "react-icons/md";
+import {uploadVideo} from "@/lib/utils/api/RemoteSwaggerService";
 
 
 // const createPost = async () => {
@@ -229,6 +230,8 @@ function SelectBox({state}: { state: [SelectBoxData[], Dispatch<SetStateAction<S
     );
 }
 
+
+
 function FileUploadSection() {
     let fileRef = useRef<HTMLInputElement>(null);
     const [fileData, setFileData] = useState<File>()
@@ -244,7 +247,27 @@ function FileUploadSection() {
     function onDragOver(e: any) {
         e.preventDefault()
     }
-
+    function uploadPost() {
+        if (!fileData) {
+            return
+        }
+        let formData = new FormData();
+        console.log(fileData?.name)
+        formData.append('post', fileData)
+        formData.append('coverImage', fileData)
+        formData.append('name', title)
+        formData.append('brief', brief)
+        formData.append('categoryTag', tag.map((item) => {
+            return item.name
+        }).join(','))
+        formData.append('reprint', reprint)
+        formData.append('type', radioBoxSelectedIndex.toString())
+        formData.append('allowReprint', rePrintCheckBoxSelectedIndex.toString())
+        formData.append('addPop', popCheckBoxSelectedIndex.toString())
+        uploadVideo({requestBody:formData}).then((value => {
+            alert(JSON.stringify(value))
+        }));
+    }
     useEffect(() => {
         console.log(`fileData 改变了`)
         console.log(fileData)
@@ -537,7 +560,7 @@ function FileUploadSection() {
                     </div>
                     <div className=' flex items-center gap-5'>
                         <input type='button' className='flex items-center justify-center rounded w-[130px] h-[45px] border border-gray-300' value='存草稿'/>
-                        <input type='button' className='flex items-center justify-center rounded bg-sky-500 w-[130px] h-[45px] text-white' value='立即投稿'/>
+                        <input type='button' className='flex items-center justify-center rounded bg-sky-500 w-[130px] h-[45px] text-white' value='立即投稿' onClick={()=>uploadPost()}/>
                     </div>
                 </div>
             }

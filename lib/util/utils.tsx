@@ -27,7 +27,7 @@ export const transHumanNumber = (number: number) => {
     return `${number.toFixed(2)}${unit[i]}`;
 }
 
-export const formatTime = (time: number | string, formatString: string) => {
+export const formatTime = (time: number | string|Date, formatString: string) => {
     let date = new Date(time);
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
@@ -41,8 +41,4 @@ export const formatTime = (time: number | string, formatString: string) => {
         .replace("HH", hour.toString())
         .replace("mm", min.toString())
         .replace("ss", second.toString())
-}
-
-export const formatTimeString = (timeString: string, sourceTimeFormat: string, formatString: string) => {
-
 }

@@ -11,18 +11,34 @@ import {findVideoByAuthorId, findVideoByRecommand, VideoVo} from "@/lib/utils/ap
 
 
 function loadMore(setVideoTagPlaceHoderData: (value: (((prevState: any[]) => any[]) | any[])) => void, setVideoTagData: (value: (((prevState: any[]) => any[]) | any[])) => void, loading: React.MutableRefObject<boolean>) {
-    console.log("loadMore")
+    // console.log("loadMore")
     let number = 10;
     setVideoTagPlaceHoderData(Array(number).fill(1))
-    setTimeout(() => {
+    findVideoByRecommand({
+        requestBody: {
+            page :{
+                pageIndex: 1,
+                pageSize: number
+            }
+        }}).then((value => {
+        // setVideoTagData(value.data)
         setVideoTagPlaceHoderData(Array(0))
         setVideoTagData((old) => {
-            old.push(...Array(number))
-            console.log(`old:${old.length}`)
+            old.push(...value.data)
+            // console.log(`old:${old.length}`)
             return old;
         })
         loading.current = false;
-    }, 3000)
+    }))
+    // setTimeout(() => {
+    //     setVideoTagPlaceHoderData(Array(0))
+    //     setVideoTagData((old) => {
+    //         old.push(...Array(number))
+    //         console.log(`old:${old.length}`)
+    //         return old;
+    //     })
+    //     loading.current = false;
+    // }, 3000)
 }
 
 const Page: NextPageWithLayout = () => {

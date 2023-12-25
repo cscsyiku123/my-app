@@ -42,4 +42,7 @@ export class TResponse<T> {
     public static getResponse<T>(data: T, responseCode: ResponseCodeConstants): TResponse<T> {
         return new TResponse<T>(responseCode.code, responseCode.message, data, responseCode.code >= 0);
     }
+    public toString():string{
+        return JSON.stringify(this);
+    }
 }

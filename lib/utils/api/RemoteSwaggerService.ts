@@ -231,7 +231,7 @@ export interface CommentRequest {
 export type CommentRequestPostType = "0" | "1";
 
 export interface CommentVo {
-  childrenComment: CommentVo[];
+  childrenComment?: CommentVo[];
   commentContent: string;
   commentatorAvatarImageLink: string;
   commentatorId: number;
@@ -239,10 +239,11 @@ export interface CommentVo {
   createTime: string;
   id: number;
   likeCount: number;
-  page: Page;
+  page?: Page;
   parentCommentId?: number;
-  parentCommentatorId: number;
-  parentCommentatorName: string;
+  parentCommentatorId?: number;
+  parentCommentatorName?: string;
+  rootCommentId?: number;
   unlikeCount: number;
 }
 
@@ -255,6 +256,7 @@ export interface Page {
 
 export interface UserEntity {
   avatarImageLink: string;
+  brief: string;
   createTime: string;
   id: number;
   name: string;
@@ -266,6 +268,7 @@ export type UserEntityValidStatus = "0" | "1";
 
 export interface UserVo {
   avatarImageLink: string;
+  brief: string;
   userId: number;
   userName: string;
 }

@@ -8,6 +8,8 @@ import {FaRegStar} from "react-icons/fa";
 import {LiaHistorySolid} from "react-icons/lia";
 import {UploadButton} from "@/components/uploadButton";
 import {useRouter} from "next/router";
+import useNextStore from "@/lib/store/store";
+import {useUserStore} from "@/lib/store/user.store";
 
 function SearchHistoryTag(props: { name: string }) {
     return (
@@ -27,6 +29,7 @@ function NavigateRightCategory(props: { name: string, icon: IconType }) {
 export default function () {
     const [searchDetailShow, setSearchDetailShow] = useState(false)
     const router = useRouter()
+    let userVo = useNextStore(useUserStore, (state) => state.user);
     return (
         <div className="navigate w-full  z-50 bg-white shadow-md flex items-center justify-between h-[75px]  sticky  top-0   ">
             <div className="leftNavigate flex items-center justify-around min-w-[450px] w-[700px]  text-[16px]  cursor-pointer ">
@@ -95,7 +98,11 @@ export default function () {
                 }
             </div>
             <div className="rightNavigate flex items-center justify-between min-w-[500px]  w-[500px] h-full">
-                <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="avator w-[40px] h-[40px] rounded-full"/>
+                {
+                    userVo.userId &&
+                    <img src={userVo.avatarImageLink} className="avator w-[40px] h-[40px] rounded-full"/>
+
+                }
                 <NavigateRightCategory name={"大会员"} icon={RiVipCrown2Line}/>
                 <NavigateRightCategory name={"消息"} icon={MdOutlineMailOutline}/>
                 <NavigateRightCategory name={"动态"} icon={TbWindmill}/>

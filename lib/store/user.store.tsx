@@ -36,6 +36,7 @@ let userStorage = 'user-storage';
 interface UserState {
     user: UserVo;
     accessToken: string;
+    parentCommentId: number;
     actionLogin:  (authRequest: AuthRequest) => Promise<{ accessToken: string }>;
 }
 
@@ -45,6 +46,7 @@ export const useUserStore = create<UserState>()(
         (set, get) => ({
             user: null as unknown as UserVo,
             accessToken: '',
+            parentCommentId:0,
             actionLogin: async (authRequest: AuthRequest) => {
                 let result =  await signIn({requestBody: authRequest});
                 let accessToken = result?.data.accessToken;

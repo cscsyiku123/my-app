@@ -16,51 +16,94 @@ import {IoAddSharp} from "react-icons/io5";
 import VideoPlayer from "@/components/videoPlayer";
 import {
     BarrageEntity, CommentVo, createComment,
-    findBarrageBySecondRang,
+    findBarrageBySecondRang, findCommentByPostId,
     findVideoByVideoId, VideoVo
 } from "@/lib/utils/api/RemoteSwaggerService";
+import useNextStore from "@/lib/store/store";
+import {useUserStore} from "@/lib/store/user.store";
 
-class Comment extends React.Component<{ commentData: CommentVo }> {
+function CommentInfo(props: { commentInfoData: CommentVo }) {
+    let userState = useNextStore(useUserStore, (state) => state);
+
+    // let {parentCommentId} = useUserStore();
+
+    return (
+
+        <div className="commentInfo flex items-start  text-gray-400 font-normal gap-3 text-[15px]">
+            <p>{props.commentInfoData.createTime}</p>
+            <p className={" hover:text-sky-400 cursor-pointer"}>{props.commentInfoData.likeCount}</p>
+            <p className={" hover:text-sky-400 cursor-pointer"} >{props.commentInfoData.unlikeCount}</p>
+            <p className={" hover:text-sky-400 cursor-pointer"} onClick={()=>{useUserStore.setState({parentCommentId:props.commentInfoData.id})}}>回复</p>
+        </div>
+    );
+}
+
+class Comment extends React.Component<{ commentData: CommentVo[] }> {
+
     render() {
-        return <div className="userComment flex items-start justify-between w-full gap-3  border-b-[1.8px] pb-5  ">
-            <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp"
-                 className="avator w-[50px] h-[50px] rounded-full"/>
-            <div
-                className="comment flex flex-col items-start justify-between bg-bottom border-solid gap-3">
-                <div className=" text-[20px]">{this.props.commentData.commentatorName}</div>
-                <div className="comment text-[18px]">
-                    {this.props.commentData.commentContent}
-                </div>
-                <div className="commentInfo flex items-start justify-between text-gray-400 font-normal gap-3">
-                    <p>{this.props.commentData.createTime}</p>
-                    <p>{this.props.commentData.likeCount}</p>
-                    <p>回复</p>
-                </div>
+
+        return  (
+            <>
                 {
-                    this.props.commentData.childrenComment?.map((item, index) => {
+                    this.props.commentData?.map((root, index) => {
                         return (
-                            <div className="commentReplySection flex flex-col items-start justify-between ">
-                                <div className="commentReply flex items-start justify-start gap-3">
-                                    <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp"
-                                         className="avator w-[40px] h-[40px] rounded-full"/>
-                                    <div className="comment mb-3">
-                                        {item.commentContent}
+                            <div className="userComment flex items-start justify-start w-full gap-3  border-b-[1.8px] pb-5  text-[18px] ">
+                                <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp" className="avator w-[50px] h-[50px] rounded-full"/>
+                                <div
+                                    className="comment flex flex-col items-start justify-between bg-bottom border-solid gap-3">
+                                    <div className=" ">{root.commentatorName}</div>
+                                    <div className="comment ">
+                                        {root.commentContent}
                                     </div>
-                                </div>
-                                <div className="commentInfo flex items-start justify-between text-gray-400 font-normal gap-3">
-                                    <p>{item.createTime}</p>
-                                    <p>3</p>
-                                    <p>回复</p>
+                                    <CommentInfo commentInfoData={root}/>
+                                    {
+                                        root.childrenComment?.map((item, index) => {
+                                            return (
+                                                <div className="commentReplySection flex flex-col items-start justify-between ">
+                                                    <div className="commentReply flex items-start justify-start gap-3">
+                                                        <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp"
+                                                             className="avator w-[40px] h-[40px] rounded-full"/>
+                                                        <div className=" ">
+                                                            {
+                                                                <div className={"flex items-center gap-3"}>
+                                                                    <div>{item.commentatorName}</div>
+                                                                    {
+                                                                        root.id != item.parentCommentatorId && "回复" && (<div className={"text-sky-400"}>{`@${item.parentCommentatorName}`}</div>)
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                        <div className="comment  mb-3">
+                                                            {item.commentContent}
+                                                        </div>
+                                                    </div>
+                                                    <CommentInfo commentInfoData={item}/>
+                                                </div>
+                                            )
+                                        })
+                                    }
+
+                                    {(root.childrenComment?.length ?? 0) > 10 && <div>共{root.childrenComment?.length}条回复,点击查看</div>}
+                                    {
+                                        root.page?.totalPageCount! > 1 &&
+                                        <div>共{root.page?.totalPageCount}页,{
+                                            Array(root.page?.totalPageCount).map((item, index) => {
+                                                return (
+                                                    <div className="pageItem">{index + 1}</div>
+                                                )
+                                            })
+                                        } {root?.page?.totalPageCount! > root.page?.pageIndex! && "下一页"}</div>
+                                    }
+
                                 </div>
                             </div>
                         )
                     })
                 }
+            </>
+            )
 
-                <div>共{this.props.commentData.childrenComment?.length}条回复,点击查看</div>
-                <div>共2页,1 2 下一页</div>
-            </div>
-        </div>;
+
     }
 }
 
@@ -74,18 +117,26 @@ const Page: NextPageWithLayout = () => {
             if (res.success) {
                 setCommentData((o) => {
                     if (o){
-                        return [res.data,...o ]
-                    }else{
-                        return [res.data]
+                        if (res.data.rootCommentId) {
+                            let index = o.findIndex((item) => {
+                                return item.id == res.data.rootCommentId
+                            })
+                            if (index != -1) {
+                                o[index].childrenComment = [res.data,...o[index].childrenComment!]
+                            }
+                            return [...o]
+                        } else {
+                            return [res.data,...o ]
+                        }
                     }
                 })
+                useUserStore.setState({parentCommentId:0})
                 setCommentContent("")
             }
         })
     }
 
     const [videoId, setVideoId] = useState<number>(0);
-    const [parentCommentId, setParentCommentId] = useState();
     useEffect(() => {
         var {isReady, query: {videoId}} = router
         if (isReady) {
@@ -96,6 +147,9 @@ const Page: NextPageWithLayout = () => {
             findBarrageBySecondRang({requestBody:{postId:Number(videoId),postType:"0",startSecond:0,endSecond:videoData?.secondDuration??0}}).then((res) => {
                 setBarrageData(res.data)
             })
+            findCommentByPostId({requestBody:{postId:Number(videoId),postType:"0",page:{pageIndex:1,pageSize:10}}}).then((res) => {
+                setCommentData(res.data)
+            })
 
         }
     }, [router.query]);
@@ -105,6 +159,9 @@ const Page: NextPageWithLayout = () => {
     const [barrageData, setBarrageData] = useState<BarrageEntity[]>();
     const [commentData, setCommentData] = useState<CommentVo[]>();
     const [commentContent, setCommentContent] = useState<string>();
+    let parentCommentId = useNextStore(useUserStore, (state) => state.parentCommentId);
+    let userVo = useNextStore(useUserStore, (state) => state.user);
+
     return (
         <>
             <div className=" h-full flex items-start justify-between max-w-[1920px] w-full ">
@@ -185,29 +242,25 @@ const Page: NextPageWithLayout = () => {
                                  className="avator w-[50px] h-[50px] rounded-full"/>
                             <div
                                 className=" h-[50px] flex items-center justify-between gap-3 box-border  hover:h-[80px] transition-all duration-1000 group">
-                                <textarea value={commentContent} className=" rounded-lg bg-gray-200 h-full group-hover:outline group-hover:outline-gray-400  focus:outline focus:outline-gray-400  w-[1070px]  focus:bg-white hover:bg-white resize-none	p-2 " placeholder="只是一直在等你" onChange={(e)=>setCommentContent(e.target.value)}/>
+                                <textarea value={commentContent} className=" rounded-lg bg-gray-200 h-full group-hover:outline group-hover:outline-gray-400  focus:outline focus:outline-gray-400  w-[1070px]  focus:bg-white hover:bg-white resize-none	p-2 " placeholder={parentCommentId && `回复 ${parentCommentId}: `|| "一直在等你"} onChange={(e)=>setCommentContent(e.target.value)}/>
                                 <input type="button" className="bg-sky-400 w-[250px] h-full rounded-lg text-white cursor-pointer" value="发布" onClick={()=>postComment()} />
                             </div>
                         </div>
                         <div className="commentSection flex flex-col items-center w-full mt-10 gap-3 ">
                             {
-                                commentData?.map((item, index) => {
-                                    return (
-                                        <Comment  commentData={item}/>
-                                    )
-                                })
+                                commentData && <Comment  commentData={commentData}/>
                             }
+
                         </div>
                     </div>
                 </div>
                 <div className="rightSiderBar ml-5">
                     <div className="author flex items-center gap-5 h-[100px]">
-                        <img src="/544c89e68f2b1f12ffcbb8b3c062a3328e8692d9.jpg@92w_92h.webp"
-                             className="avator w-[50px] h-[50px] rounded-full"/>
+                        <img src={userVo.avatarImageLink} className="avator w-[50px] h-[50px] rounded-full"/>
                         <div className={"flex flex-col items-start justify-between "}>
-                            <div className="text-[20px]">用户名</div>
-                            <div
-                                className="text-gray-400 text-[15px] line-clamp-1 w-[400px]">深耕核心力（思维力、学习力、人脉力）训练8年，可加微信1231313112313号youcore12
+                            <div className="text-[20px]">{userVo.userName}</div>
+                            <div className="text-gray-400 text-[15px] line-clamp-1 w-[400px]">
+                                {userVo.brief}
                             </div>
                             <div className="flex items-center justify-between w-[400px] mt-3">
                                 <div

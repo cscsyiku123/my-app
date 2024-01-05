@@ -79,11 +79,13 @@ export class VideoPlayer extends Component<IProps, IState> {
                  onDoubleClick={()=>{
                      const container = this.state.videoPlayRef?.current;
                      if(this.state.isFullScreen) {
-                         this.setState({isFullScreen: false})
-                         document.exitFullscreen()
+                         this.setState({isFullScreen: false},()=>{
+                             document.exitFullscreen()
+                         })
                      }else{
-                         this.setState({isFullScreen: true})
-                         container?.requestFullscreen()
+                         this.setState({isFullScreen: true},()=>{
+                            container?.requestFullscreen()
+                        })
                     }
                  }}
                  onClick={()=>{

@@ -1,12 +1,9 @@
 import {NextRequest, NextResponse} from "next/server";
 import {useUserStore} from "@/lib/store/user.store";
+import {Router} from "next/router";
 export function middleware(request: NextRequest) {
-    let userId = useUserStore.getState().user?.userId;
-    if (userId) {
-        return NextResponse.next()
-    }
-    return NextResponse.redirect(new URL('/', request.url))
+    return NextResponse.next()
 }
 export const config = {
-    matcher: '/user/',
+    matcher: ['/platform/:path*'],
 }

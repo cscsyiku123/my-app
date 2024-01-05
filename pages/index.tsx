@@ -10,55 +10,55 @@ import {VideoCardPlaceHoder} from "@/components/videoCardPlaceHoder";
 import {findVideoByAuthorId, findVideoByRecommand, VideoVo} from "@/lib/utils/api/RemoteSwaggerService";
 
 
-function loadMore(setVideoTagPlaceHoderData: (value: (((prevState: any[]) => any[]) | any[])) => void, setVideoTagData: (value: (((prevState: any[]) => any[]) | any[])) => void, loading: React.MutableRefObject<boolean>) {
-    // console.log("loadMore")
-    let number = 10;
-    setVideoTagPlaceHoderData(Array(number).fill(1))
-    findVideoByRecommand({
-        requestBody: {
-            page :{
-                pageIndex: 1,
-                pageSize: number
-            }
-        }}).then((value => {
-        // setVideoTagData(value.data)
-        setVideoTagPlaceHoderData(Array(0))
-        setVideoTagData((old) => {
-            old.push(...value.data)
-            // console.log(`old:${old.length}`)
-            return old;
-        })
-        loading.current = false;
-    }))
-    // setTimeout(() => {
-    //     setVideoTagPlaceHoderData(Array(0))
-    //     setVideoTagData((old) => {
-    //         old.push(...Array(number))
-    //         console.log(`old:${old.length}`)
-    //         return old;
-    //     })
-    //     loading.current = false;
-    // }, 3000)
-}
-
+let nextPageIndex = 0;
 const Page: NextPageWithLayout = () => {
-
-    const [videoTagData, setVideoTagData] = useState<VideoVo[]>(Array(0));
-    const [videoTagPlaceHoderData, setVideoTagPlaceHoderData] = useState(Array(0));
     const loading = useRef(false);
-    const [load, setLoad] = useState(true);
-    useEffect(()=>{
+    const nextPageIndexState = useState(1);
+    const videoVoDataState = useState<VideoVo[]>(Array(0));
+    const videoPlaceHolderDataState = useState(Array(0));
+    // const [nextPageIndex, setNextPageIndex] = nextPageIndexState;
+    const [videoVoData, setVideoTagData] = videoVoDataState;
+    const [videoVoPlaceHoderData, setVideoTagPlaceHoderData] = videoPlaceHolderDataState;
+
+
+    function loadMore(loading: React.MutableRefObject<boolean>, nextPageIndexState: [number, ((value: (((prevState: number) => number) | number)) => void)], videoVoDataState: [VideoVo[], ((value: (((prevState: VideoVo[]) => VideoVo[]) | VideoVo[])) => void)], videoPlaceHolderDataState: [any[], ((value: (((prevState: any[]) => any[]) | any[])) => void)]) {
+        const [videoVoData, setVideoVoData] = videoVoDataState;
+        const [videoVoPlaceHoderData, setVideoVoPlaceHoderData] = videoPlaceHolderDataState;
+        // const [nextPageIndex, setNextPageIndex] = nextPageIndexState;
+        loading.current = true;
+        console.log("loadMore")
+        let number = 10;
+        setVideoVoPlaceHoderData(Array(number).fill(1))
         findVideoByRecommand({
             requestBody: {
                 page :{
-                    pageIndex: 1,
-                    pageSize: 10
+                    pageIndex: ++nextPageIndex,
+                    pageSize: number
                 }
             }}).then((value => {
-            setVideoTagData(value.data)
+            setVideoVoPlaceHoderData(Array(0))
+            if (value.data.page) {
+                setVideoVoData((old) => {
+                    old.push(...value.data.detail)
+                    return old;
+                })
+                if ((value.data.page?.totalPageCount??0) <= nextPageIndex){
+                    console.log("noMore")
+                    nextPageIndex = 0;
+                    // setNextPageIndex(()=>0)
+                } else {
+
+                }
+                console.log("nextPageIndex",nextPageIndex)
+            }
+            setTimeout(()=>{
+                loading.current = false;
+            },1000)
+            ;
         }))
-
-
+    }
+    useEffect(()=>{
+        loadMore(loading,nextPageIndexState,videoVoDataState,videoPlaceHolderDataState)
         let scrollListener = ()=>{
             const windowHeight =
                 'innerHeight' in window
@@ -74,12 +74,9 @@ const Page: NextPageWithLayout = () => {
                 html.offsetHeight
             );
             const windowBottom = windowHeight + window.pageYOffset;
-            // console.log(windowBottom)
-            // console.log(documentHeight)
-            if (windowBottom+100 >= documentHeight && !loading.current && load) {
-                console.log(`loading:${loading.current}`)
-                loading.current = true;
-                loadMore(setVideoTagPlaceHoderData,setVideoTagData,loading)
+            if (windowBottom+100 >= documentHeight && !loading.current && nextPageIndex) {
+                console.log("bottom reached")
+                loadMore(loading,nextPageIndexState,videoVoDataState,videoPlaceHolderDataState)
             }
         };
         window.addEventListener('scroll', scrollListener);
@@ -153,13 +150,13 @@ const Page: NextPageWithLayout = () => {
                 )}/>
 
                 {
-                    videoTagData.map((item, index) => {
+                    videoVoData.map((item, index) => {
                         return <VideoCard video={item}/>
                     })
                 }
 
                 {
-                    videoTagPlaceHoderData.map((item, index) => {
+                    videoVoPlaceHoderData.map((item, index) => {
                         return <VideoCardPlaceHoder/>
                     })
                 }

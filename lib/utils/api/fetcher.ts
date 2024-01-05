@@ -1,20 +1,37 @@
 import axios, {AxiosRequestConfig} from "axios";
 import {useUserStore} from "@/lib/store/user.store";
-import {TResponse} from "@/lib/entitiy/TResponse";
-
+import {ResponseCodeConstants, TResponse} from "@/lib/entitiy/TResponse";
+import {VideoRequest} from "@/lib/utils/api/RemoteSwaggerService";
+import {backendBaseUrl} from "@/lib/utils/utils";
 // axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://localhost:3100/'
+axios.defaults.baseURL = backendBaseUrl
 axios.interceptors.request.use(
     function (config) {
         let accessToken = useUserStore.getState().accessToken;
         // const accessToken1 = getLocalStory<{accessToken:string}>(userStorage)?.accessToken;
-        console.log(`accessToken:${accessToken}`)
+        // console.log(`accessToken:${accessToken}`)
         if (accessToken) {
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
         return config;
     },
     function (error) {
+        return Promise.reject(error);
+    }
+);
+axios.interceptors.response.use(
+    function (response) {
+        let {success,code} = response.data as TResponse<any>;
+        if (code === ResponseCodeConstants.NO_PERMISSION.code) {
+            useUserStore.setState({openAuthOverlay:true})
+        }
+
+        return response;
+    },
+    function (error) {
+        if (error.response.status === 401) {
+
+        }
         return Promise.reject(error);
     }
 );
@@ -31,3 +48,6 @@ export const fetcher = <TReq, TResp = any>(
         return axios.request<TResponse<TResp>>(requestConfigCreator(args)).then(e => e.data);
     };
 };
+
+
+

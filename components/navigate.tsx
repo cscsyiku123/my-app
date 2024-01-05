@@ -30,9 +30,10 @@ export default function () {
     const [searchDetailShow, setSearchDetailShow] = useState(false)
     const router = useRouter()
     let userVo = useNextStore(useUserStore, (state) => state.user);
+    let {actionLogout} = useUserStore();
     return (
         <div className="navigate w-full  z-50 bg-white shadow-md flex items-center justify-between h-[75px]  sticky  top-0   ">
-            <div className="leftNavigate flex items-center justify-around min-w-[450px] w-[700px]  text-[16px]  cursor-pointer ">
+            <div className="leftNavigate flex items-center justify-around min-w-[450px] w-[700px]  text-[16px]  cursor-pointer  ">
                 <div className=" group flex items-center relative "
                      onClick={() => {
                          router.push('/')
@@ -41,7 +42,7 @@ export default function () {
                     <p>首页</p>
                     <MdOutlineKeyboardArrowDown className="transition-all duration-500 group-hover:rotate-180"/>
                     <div
-                        className="z-10 absolute -bottom-[75px] transition-all duration-500 opacity-0 hidden group-hover:block group-hover:opacity-100 w-[500px] p-5 border-2 border-gray-300 border-solid shadow bg-white">
+                        className="z-10 absolute -bottom-[75px] transition-all duration-500 opacity-0  group-hover:opacity-100 w-[500px] p-5 border border-gray-200 border-solid shadow bg-white">
                     </div>
                 </div>
                 <div>番剧</div>
@@ -99,8 +100,38 @@ export default function () {
             </div>
             <div className="rightNavigate flex items-center justify-between min-w-[500px]  w-[500px] h-full">
                 {
-                    userVo.userId &&
-                    <img src={userVo.avatarImageLink} className="avator w-[40px] h-[40px] rounded-full"/>
+                    userVo?.userId &&
+                    <div className={' flex group relative'}>
+                        <img src={userVo.avatarImageLink} className="avator z-10 w-[40px] h-[40px] rounded-full group-hover:scale-[2]  group-hover:translate-y-8 transition-all "/>
+                        <div className=" absolute top-[70px] -right-[150px]  transition delay-500 hidden group-hover:flex group-hover:flex gap-1 opacity-0  group-hover:opacity-100 group-hover:opacity-100 w-[350px] p-5 border border-gray-200 border-solid shadow bg-white flex justify-center flex-col items-center">
+                            <div className={"text-[#FF6699] font-medium"}>{userVo?.userName}</div>
+                            <div className={'bg-pink-400 text-white text-[10px] rounded-lg px-2'}>年度大会员</div>
+                            <div className={'flex items-center justify-between gap-20'}>
+                                <div className={'flex flex-col items-center cursor-pointer group hover:text-sky-400'}>
+                                    <div className={'font-medium text-[18px]'}>3</div>
+                                    <div className={'text-gray-500 text-[12px] group-hover:text-sky-400'}>关注</div>
+                                </div>
+                                <div className={'flex flex-col items-center '}>
+                                    <div className={'font-medium text-[18px]'}>3</div>
+                                    <div className={'text-gray-500 text-[12px]'}>关注</div>
+                                </div>
+                                <div className={'flex flex-col items-center '}>
+                                    <div className={'font-medium text-[18px]'}>3</div>
+                                    <div className={'text-gray-500 text-[12px]'}>关注</div>
+                                </div>
+                            </div>
+                            <div className={'hover:bg-gray-200 w-full text-[16px] px-5    rounded-lg py-1 font-medium text-gray-600 transition-all duration-300 cursor-pointer '}>个人中心</div>
+                            <div className={'hover:bg-gray-200 w-full text-[16px] px-5    rounded-lg py-1 font-medium text-gray-600 cursor-pointer'}>投稿管理</div>
+                            <div className={'hover:bg-gray-200 w-full text-[16px] px-5    rounded-lg py-1 font-medium text-gray-600 cursor-pointer'}>推荐服务</div>
+                            <div className={'border-t  w-full'}></div>
+                            <div className={'hover:bg-gray-200 w-full text-[16px] px-5   rounded-lg py-1 font-medium text-gray-600 cursor-pointer'} onClick={()=>actionLogout()}>退出登录</div>
+                        </div>
+                    </div>
+                    ||
+                    <div className="avator cursor-pointer w-[40px] h-[40px] rounded-full bg-sky-500 text-center text-white flex items-center justify-center" onClick={(e)=>{
+                        e.stopPropagation()
+                        useUserStore.setState({openAuthOverlay:true})
+                    }}>登录</div>
 
                 }
                 <NavigateRightCategory name={"大会员"} icon={RiVipCrown2Line}/>

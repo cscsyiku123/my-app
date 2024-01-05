@@ -1,6 +1,7 @@
 import {persist} from 'zustand/middleware'
 import {create} from 'zustand'
 import {AuthRequest, getProfile, signIn, UserVo} from "@/lib/utils/api/RemoteSwaggerService";
+import {router} from "next/client";
 let userStorage = 'user-storage';
 //
 //  function apiLogin<R>(request: R) {
@@ -37,7 +38,9 @@ interface UserState {
     user: UserVo;
     accessToken: string;
     parentCommentId: number;
+    openAuthOverlay: boolean;
     actionLogin:  (authRequest: AuthRequest) => Promise<{ accessToken: string }>;
+    actionLogout:  () => void;
 }
 
 export const useUserStore = create<UserState>()(
@@ -47,14 +50,24 @@ export const useUserStore = create<UserState>()(
             user: null as unknown as UserVo,
             accessToken: '',
             parentCommentId:0,
+            openAuthOverlay : false,
             actionLogin: async (authRequest: AuthRequest) => {
                 let result =  await signIn({requestBody: authRequest});
-                let accessToken = result?.data.accessToken;
-                set({ accessToken: accessToken})
-                let tResponse =await getProfile(accessToken);
-                set({user: tResponse?.data})
+                if (result.success) {
+                    let accessToken = result?.data.accessToken;
+                    set({ accessToken: accessToken})
+                    let tResponse =await getProfile(accessToken);
+                    set({user: tResponse?.data})
+                    set({openAuthOverlay: false})
+                } else {
+                    alert(result.message)
+                }
                 return {accessToken: get().accessToken};
-            }
+            },
+            actionLogout: () => {
+                set({accessToken: '',parentCommentId:0,user: null as unknown as UserVo,openAuthOverlay: false})
+            },
+
         }),
 
         {

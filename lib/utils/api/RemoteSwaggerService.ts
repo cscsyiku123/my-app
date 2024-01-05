@@ -64,7 +64,7 @@ export const findCommentByPostId = fetcher<
   {
     requestBody: CommentRequest;
   },
-  CommentVo[]
+  CommentVo
 >("findCommentByPostId", ({ requestBody }) => ({
   url: `/api/pn/comment/findCommentByPostId`,
   method: "POST",
@@ -88,7 +88,7 @@ export const findVideoByRecommand = fetcher<
   {
     requestBody: VideoRequest;
   },
-  VideoVo[]
+  VideoVo
 >("findVideoByRecommand", ({ requestBody }) => ({
   url: `/api/pn/video/findVideoByRecommand`,
   method: "POST",
@@ -237,6 +237,7 @@ export interface CommentVo {
   commentatorId: number;
   commentatorName: string;
   createTime: string;
+  detail?: CommentVo[];
   id: number;
   likeCount: number;
   page?: Page;
@@ -296,6 +297,8 @@ export interface VideoRequest {
 export type VideoRequestValidStatus = "0" | "1";
 
 export interface VideoVo {
+  authorAvatarImageLink: string;
+  authorBrief: string;
   authorId: number;
   authorName: string;
   brief: string;
@@ -303,10 +306,12 @@ export interface VideoVo {
   commentCount: number;
   coverImageLink: string;
   createTime: string;
+  detail: VideoVo[];
   followCount: number;
   id: number;
   likeCount: number;
   name: string;
+  page: Page;
   playCount: number;
   playLink: string;
   secondDuration: number;

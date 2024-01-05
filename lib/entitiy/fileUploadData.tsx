@@ -1,11 +1,11 @@
-
 export class FileUploadData {
-    uploadedSize :number;
-    uploadingSpeed :number;
-    fileCoverImage:string[];
-    constructor(uploadedSize: number, uploadingSpeed: number, fileCoverImage: string[]) {
+    totalSize: number;
+    uploadedSize: number;
+    uploadingSpeed: number;
+
+    constructor(totalSize: number, uploadedSize: number, uploadingSpeed: number) {
+        this.totalSize = totalSize;
         this.uploadedSize = uploadedSize;
         this.uploadingSpeed = uploadingSpeed;
-        this.fileCoverImage = fileCoverImage;
     }
 }

@@ -5,14 +5,14 @@ import {useRouter} from "next/router";
 import {UploadNavigate} from "@/lib/entitiy/uploadNavigate";
 import Link from "next/link";
 import {FileUploadData} from "@/lib/entitiy/fileUploadData";
-import {transHumanByteSize, transHumanTime} from "@/lib/util/utils";
+import {transHumanByteSize, transHumanTime} from "@/lib/utils/utils";
 import {BsFillFileEarmarkPlayFill} from "react-icons/bs";
 import {VideoTagData} from "@/lib/entitiy/videoTagData";
 import {RadioBoxData} from "@/lib/entitiy/radioBoxData";
 import {CheckBoxData} from "@/lib/entitiy/checkBoxData";
 import {SelectBoxData} from "@/lib/entitiy/selectBoxData";
 import {MdOutlineKeyboardArrowDown} from "react-icons/md";
-import {uploadVideo} from "@/lib/utils/api/RemoteSwaggerService";
+import {uploadFile} from "@/lib/utils/api/customerDefineService";
 
 
 // const createPost = async () => {
@@ -231,30 +231,44 @@ function SelectBox({state}: { state: [SelectBoxData[], Dispatch<SetStateAction<S
 }
 
 
-
-function FileUploadSection() {
+function DragUpload(props: {file: [File | undefined, Dispatch<SetStateAction<File | undefined>>], children: ReactElement[]|ReactElement,accept:string, className?: string }) {
     let fileRef = useRef<HTMLInputElement>(null);
-    const [fileData, setFileData] = useState<File>()
-    const [fileUploadData, setFileUploadData] = useState(new FileUploadData(10000000, 2000, ['/example.png', '/example.png', '/example.png']));
+    const [file, setFile] = props.file
     const onChange = (e: any) => {
-        setFileData(fileRef.current?.files?.[0])
+        setFile(fileRef.current?.files?.[0])
     }
     const onDrop = (e: any) => {
         e.preventDefault()
-        setFileData(e.dataTransfer.files[0])
+        setFile(e.dataTransfer.files[0])
     }
 
     function onDragOver(e: any) {
         e.preventDefault()
     }
+    return <label htmlFor="fileInput"
+                  className={`${props.className} cursor-pointer`}
+                  onDrop={onDrop} onDragOver={onDragOver}>
+        <input accept={props.accept} type="file" className=" hidden" id="fileInput" onChange={onChange} ref={fileRef}/>
+        {props.children}
+    </label>;
+}
+
+function FileUploadSection() {
+    let fileState = useState<File>();
+    const [file, setFile] = fileState
+    let coverImageState = useState<File>();
+    const [coverImage, setCoverImage] = coverImageState;
+
+    let fileData = useState(new FileUploadData(10000000, 0, 0));
+    const [fileUploadData, setFileUploadData] = fileData;
     function uploadPost() {
-        if (!fileData) {
+        if (!file || !coverImage) {
             return
         }
         let formData = new FormData();
-        console.log(fileData?.name)
-        formData.append('post', fileData)
-        formData.append('coverImage', fileData)
+        console.log(file?.name)
+        formData.append('post', file)
+        formData.append('coverImage', coverImage)
         formData.append('name', title)
         formData.append('brief', brief)
         formData.append('categoryTag', tag.map((item) => {
@@ -264,14 +278,19 @@ function FileUploadSection() {
         formData.append('type', radioBoxSelectedIndex.toString())
         formData.append('allowReprint', rePrintCheckBoxSelectedIndex.toString())
         formData.append('addPop', popCheckBoxSelectedIndex.toString())
-        uploadVideo({requestBody:formData}).then((value => {
+        uploadFile(formData,fileData).then((value => {
             alert(JSON.stringify(value))
         }));
     }
     useEffect(() => {
-        console.log(`fileData 改变了`)
-        console.log(fileData)
-    }, [fileData])
+        setFileUploadData((o)=>{
+            return new FileUploadData(file?.size??0, o.uploadedSize, o.uploadingSpeed)
+        })
+    }, [file])
+
+    useEffect(() => {
+        console.log(coverImageState)
+    }, [coverImage])
 
     const [title, setTitle] = useState('')
     useEffect(() => {
@@ -384,33 +403,30 @@ function FileUploadSection() {
     return (
         <div className={''}>
             {
-                !fileData && <label htmlFor="fileInput"
-                                    className="uploadSection flex flex-col items-center justify-center border-dashed border-2 border-gray-400 w-[800px] h-[300px] cursor-pointer hover:bg-gray-50 gap-5"
-                                    onDrop={onDrop} onDragOver={onDragOver}>
-                    <input accept={'video/*'} type="file" className=" hidden" id="fileInput" onChange={onChange} ref={fileRef}/>
-                    <p className="text-gray-400">拖拽导此处也可上传</p>
-                    <div className="text-white bg-sky-500 w-[250px] h-[45px] rounded flex items-center justify-center">上传视频
-                    </div>
-                    <p className="text-gray-400">当前审核队列 快速</p>
-                </label>
+                !file &&
+                <DragUpload accept={'video/*'} file={fileState} className={"uploadSection flex flex-col items-center justify-center border-dashed border-2 border-gray-400 w-[800px] h-[300px] cursor-pointer hover:bg-gray-50 gap-5"}>
+                       <p className="text-gray-400">拖拽导此处也可上传</p>
+                       <div className="text-white bg-sky-500 w-[250px] h-[45px] rounded flex items-center justify-center">上传视频</div>
+                       <p className="text-gray-400">当前审核队列 快速</p>
+                </DragUpload>
             }
             {
-                fileData &&
+                file &&
                 <div className='uploadingSection flex flex-col items-start justify-start h-full w-full gap-8'>
-                    <div>{fileData.name}</div>
+                    <div>{file.name}</div>
                     <div className='flex items-center '>
                         <div>
                             <BsFillFileEarmarkPlayFill className={'text-sky-400 w-[50px] h-[50px]'}/>
                         </div>
                         <div className='flex items-start flex-col gap-3  '>
                             <div className='flex justify-between items-center w-full text-gray-500'>
-                                <div>{`已经上传：${transHumanByteSize(fileUploadData.uploadedSize)}/${transHumanByteSize(fileData.size)} 当前速度：${transHumanByteSize(fileUploadData.uploadingSpeed)}/s 剩余时间: ${transHumanTime((fileData.size - fileUploadData.uploadedSize) / fileUploadData.uploadingSpeed)}`}</div>
-                                <div>{`${(fileUploadData.uploadedSize * 100 / fileData.size).toFixed(0)}%`}</div>
+                                <div>{`已经上传：${transHumanByteSize(fileUploadData.uploadedSize)}/${transHumanByteSize(fileUploadData.totalSize)} 当前速度：${transHumanByteSize(fileUploadData.uploadingSpeed)}/s 剩余时间: ${transHumanTime(fileUploadData.uploadingSpeed==0?0:(fileUploadData.totalSize - fileUploadData.uploadedSize) / fileUploadData.uploadingSpeed)}`}</div>
+                                <div>{`${(fileUploadData.uploadedSize * 100 / fileUploadData.totalSize).toFixed(0)}%`}</div>
                             </div>
                             <div className='progress h-[4px] bg-gray-300 w-[900px] rounded flex items-start'>
                                 <div className='progressBar h-[4px] bg-sky-500 rounded'
                                      style={{
-                                         width: `${(fileUploadData.uploadedSize * 100 / fileData.size).toFixed(0)}%`
+                                         width: `${(fileUploadData.uploadedSize * 100 / fileUploadData.totalSize).toFixed(2)}%`
                                      }}
                                 ></div>
                             </div>
@@ -423,10 +439,17 @@ function FileUploadSection() {
                     <div className={'flex items-center gap-10'}>
                         <div className={'flex items-center gap-1'}>
                             <p className={' text-red-500'}>*</p>
-                            <p>封面</p>
+                            <div>
+                               封面
+                            </div>
                         </div>
-                        <img src={'/example.png'} className={'w-[220px] h-[150px] rounded cursor-pointer'}/>
-
+                        {
+                            coverImage && <img src={URL.createObjectURL(coverImage)} className={'w-[220px] h-[150px] rounded cursor-pointer'}/>
+                            ||
+                            <DragUpload accept={'image/*'} file={coverImageState} className={"uploadSection flex flex-col items-center justify-center border-dashed border-2 border-gray-400 w-[220px] h-[150px] hover:bg-gray-50 gap-5"}>
+                                <p className="text-gray-400">+</p>
+                            </DragUpload>
+                        }
                     </div>
                     <div className={'flex items-center gap-10'}>
                         <div className={'flex items-center gap-1'}>

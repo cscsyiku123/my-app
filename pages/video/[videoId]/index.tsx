@@ -21,6 +21,7 @@ import {
 } from "@/lib/utils/api/RemoteSwaggerService";
 import useNextStore from "@/lib/store/store";
 import {useUserStore} from "@/lib/store/user.store";
+import {backendBaseUrl} from "@/lib/utils/utils";
 
 function CommentInfo(props: { commentInfoData: CommentVo }) {
     let userState = useNextStore(useUserStore, (state) => state);
@@ -148,9 +149,9 @@ const Page: NextPageWithLayout = () => {
                 setBarrageData(res.data)
             })
             findCommentByPostId({requestBody:{postId:Number(videoId),postType:"0",page:{pageIndex:1,pageSize:10}}}).then((res) => {
-                setCommentData(res.data)
+                setCommentData(res.data.detail)
             })
-
+        useUserStore.setState({parentCommentId:0})
         }
     }, [router.query]);
 
@@ -161,7 +162,7 @@ const Page: NextPageWithLayout = () => {
     const [commentContent, setCommentContent] = useState<string>();
     let parentCommentId = useNextStore(useUserStore, (state) => state.parentCommentId);
     let userVo = useNextStore(useUserStore, (state) => state.user);
-
+    console.log(`videoplaylink:${videoData?.playLink}`)
     return (
         <>
             <div className=" h-full flex items-start justify-between max-w-[1920px] w-full ">
@@ -181,7 +182,27 @@ const Page: NextPageWithLayout = () => {
                     </div>
                     <div className="videoMain  w-full border-b mt-5  z-10 ">
                         <div className="w-full h-[750px]  bg-zinc-950 ">
-                            <VideoPlayer></VideoPlayer>
+                            {
+                                videoData && <VideoPlayer options={{
+                                    autoplay: true,
+                                    muted: true,
+                                    controls: false,
+                                    playbackRates: [0.5, 1, 1.5, 2],
+                                    sources: [{
+                                        src: `${backendBaseUrl+videoData?.playLink}`,
+                                        type: 'video/mp4'
+                                    }],
+                                    controlBar: {
+                                        // 竖直的音量控制
+                                        volumePanel: {
+                                            inline: false
+                                        },
+                                    },
+                                    loop: true,
+                                    height: undefined,
+                                    width: undefined
+                                }}></VideoPlayer>
+                            }
                         </div>
                         <div className="w-full h-[75px] flex items-center justify-between shadow-lg p-5 text-[18px] text-gray-400">
                             <p>67 人正在看，已装填517条弹幕</p>
@@ -256,11 +277,11 @@ const Page: NextPageWithLayout = () => {
                 </div>
                 <div className="rightSiderBar ml-5">
                     <div className="author flex items-center gap-5 h-[100px]">
-                        <img src={userVo.avatarImageLink} className="avator w-[50px] h-[50px] rounded-full"/>
+                        <img src={videoData?.authorAvatarImageLink} className="avator w-[50px] h-[50px] rounded-full"/>
                         <div className={"flex flex-col items-start justify-between "}>
-                            <div className="text-[20px]">{userVo.userName}</div>
+                            <div className="text-[20px]">{videoData?.authorName}</div>
                             <div className="text-gray-400 text-[15px] line-clamp-1 w-[400px]">
-                                {userVo.brief}
+                                {videoData?.authorBrief}
                             </div>
                             <div className="flex items-center justify-between w-[400px] mt-3">
                                 <div
